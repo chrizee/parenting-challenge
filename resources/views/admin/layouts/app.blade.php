@@ -23,20 +23,28 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
     <!-- iCheck -->
-    <link rel="stylesheet" href="{{ asset('plugins/iCheck/flat/blue.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/iCheck/square/blue.css') }}">
     <!-- Date Picker -->
     <link rel="stylesheet" href="{{ asset('plugins/datepicker/datepicker3.css') }}">
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="{{ asset('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
-
+    <!-- jQuery 2.2.3 -->
+    <script src="{{ asset('plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        div.options div.input-group {
+            width:100%;
+        }
+    </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
@@ -332,8 +340,8 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="admin/quiz/create"><i class="fa fa-circle-o text-yellow"></i> New</a></li>
-                            <li><a href="admin/quiz/view"><i class="fa fa-circle-o text-red"></i> View</a></li>
+                            <li><a href="/admin/parentingquiz"><i class="fa fa-circle-o text-yellow"></i> Parenting Quiz</a></li>
+                            <li><a href="/admin/babyquiz"><i class="fa fa-circle-o text-red"></i> Baby Quiz</a></li>
                         </ul>
                     </li>
                     <li>
@@ -368,6 +376,7 @@
                     {{ $title1 }}
                     <small>Control panel</small>
                 </h1>
+                @include('admin.layouts.messages')
                 <ol class="breadcrumb">
                     <li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li>
                     <li class="active">{{ $title2  }}</li>
@@ -589,10 +598,7 @@
     </div>
     <!-- ./wrapper -->
 
-    <!-- jQuery 2.2.3 -->
-    <script src="{{ asset('plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
     <!-- Bootstrap 3.3.6 -->
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- Sparkline -->

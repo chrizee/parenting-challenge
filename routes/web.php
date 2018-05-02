@@ -18,3 +18,5 @@ Route::get('/', function () {
 Route::get('/admin', 'PagesController@dashboard');
 Route::get('/admin/dashboard', 'PagesController@dashboard');
 Route::get('/admin/register', 'PagesController@registerAdmin');
+Route::resource('admin/parentingquiz', "ParentingQuizzesController");
+Route::resource('admin/babyquiz', "BabyQuizzesController");
