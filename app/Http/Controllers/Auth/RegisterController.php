@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -27,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin';
 
     /**
      * Create a new controller instance.
@@ -36,7 +37,9 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        //$this->middleware('guest');
+        //changed it to 'auth' because admin needs to be logged in before registering another admin
+        $this->middleware('auth');
     }
 
     /**
@@ -51,6 +54,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'pic' => 'image|nullable|max:1999'
         ]);
     }
 
@@ -60,12 +64,28 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create(Request $request)
     {
+        //handle file upload
+        if($request->hasFile('pic')) {
+            //filename with extension
+            $filenameWithExt = $request->file('pic')->getClientOriginalName();
+            //get only the filename
+            //$filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            //GET only the extension
+            $extension = $request->file('pic')->getClientOriginalExtension();
+            $fileNameToStore = 'user_'.time().'.'.$extension; //make he filename unique
+            $path = $request->file('pic')->storeAs('public/user_images', $fileNameToStore);
+        } else {
+            $fileNameToStore = 'nouser.png';
+        }
+        
+        $data = $request->all();
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'pic' => $fileNameToStore
         ]);
     }
 }

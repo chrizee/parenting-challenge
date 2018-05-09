@@ -7,14 +7,10 @@ use App\ParentingQuiz;
 
 class ParentingQuizzesController extends Controller
 {
-    public $title;
 
     public function __construct()
     {
-        $this->title = [
-            'title1' => 'Parenting Quiz',
-            'title2' => 'Quiz'
-        ];
+        $this->middleware('auth');
     }
 
     /**
@@ -56,13 +52,13 @@ class ParentingQuizzesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'question' => 'required',
-            'optionA' => 'required',
-            'optionB' => 'required',
-            'optionC' => 'required',
-            'optionD' => 'required',
-            'optionE' => 'required',
-            'answer' => 'required'
+            'question' => 'required|string',
+            'optionA' => 'required|string|max:191',
+            'optionB' => 'required|string|max:191',
+            'optionC' => 'required|string|max:191',
+            'optionD' => 'required|string|max:191',
+            'optionE' => 'required|string|max:191',
+            'answer' => 'required|string|max:1'
         ]);
 
         $parentingQuiz = new ParentingQuiz;
@@ -128,13 +124,13 @@ class ParentingQuizzesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'question' => 'required',
-            'optionA' => 'required',
-            'optionB' => 'required',
-            'optionC' => 'required',
-            'optionD' => 'required',
-            'optionE' => 'required',
-            'answer' => 'required'
+            'question' => 'required|string',
+            'optionA' => 'required|string|max:191',
+            'optionB' => 'required|string|max:191',
+            'optionC' => 'required|string|max:191',
+            'optionD' => 'required|string|max:191',
+            'optionE' => 'required|string|max:191',
+            'answer' => 'required|string|max:1'
         ]);
 
         $parentingQuiz = ParentingQuiz::find($id);

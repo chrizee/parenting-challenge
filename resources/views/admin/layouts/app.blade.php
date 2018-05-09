@@ -18,7 +18,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('dist/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/css/Admin.css') }}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
@@ -262,17 +262,17 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Alexander Pierce</span>
+                                <img src="/storage/user_images/{{ Auth::user()->pic }}" class="user-image" alt="User Image">
+                                <span class="hidden-xs">{{ Auth::user()->name }}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+                                    <img src="/storage/user_images/{{ Auth::user()->pic }}" class="img-circle" alt="User Image">
 
                                     <p>
-                                        Alexander Pierce - Web Developer
-                                        <small>Member since Nov. 2012</small>
+                                        {{ Auth::user()->name }} - Admin
+                                        <small>Member since {{ Auth::user()->created_at->toFormattedDateString()}}</small>
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
@@ -293,10 +293,12 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="/admin/profile" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="{{ route('logout') }}"
+                                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();" class="btn btn-default btn-flat">Sign out</a>
                                     </div>
                                 </li>
                             </ul>
@@ -316,10 +318,10 @@
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+                        <img src="/storage/user_images/{{ Auth::user()->pic }}" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <p>Okoro Efe</p>
+                        <p>{{ Auth::user()->name }}</p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>
@@ -344,13 +346,50 @@
                             <li><a href="/admin/babyquiz"><i class="fa fa-circle-o text-red"></i> Baby Quiz</a></li>
                         </ul>
                     </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-info"></i>
+                            <span>Tips</span>
+                            <span class="pull-right-container">
+                              <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/admin/babyfact"><i class="fa fa-circle-o text-yellow"></i> Baby Fact</a></li>
+                            <li><a href="/admin/parentingtips"><i class="fa fa-circle-o text-red"></i> Parenting Tips</a></li>
+                            <li><a href="/admin/pregnancytips"><i class="fa fa-circle-o text-green"></i> Pregnancy Tips</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-support"></i>
+                            <span>Psychology</span>
+                            <span class="pull-right-container">
+                              <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/admin/parentpsychology"><i class="fa fa-circle-o text-yellow"></i> Parent Psychology</a></li>
+                            <li><a href="/admin/childpsychology"><i class="fa fa-circle-o text-red"></i> Child Psychology</a></li>
+                        </ul>
+                    </li>
                     <li>
-                        <a href="admin/broadcast">
-                            <i class="fa fa-envelope"></i> <span>Broadcast</span>
+                        <a href="/admin/adverts">
+                            <i class="fa fa-th"></i> <span>Ads</span>
                         </a>
                     </li>
                     <li>
-                        <a href="admin/register">
+                        <a href="/admin/about">
+                            <i class="fa fa-bookmark"></i> <span>About us</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/slider">
+                            <i class="fa fa-photo"></i> <span>Sliders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/register">
                             <i class="fa fa-user"></i> <span>Register</span>
                             <span class="pull-right-container">
                               <small class="label pull-right bg-green">new</small>
@@ -359,9 +398,15 @@
                     </li>
 
                     <li>
-                        <a href="admin/logout">
+                        <a href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
                             <i class="fa fa-power-off"></i> <span>Logout</span>
                         </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
                     </li>
                     </ul>
             </section>
