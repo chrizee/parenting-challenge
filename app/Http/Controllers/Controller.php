@@ -9,5 +9,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
+    protected $noImage = 'noimage.png';
+    protected  $noUser = 'nouser.png';
+
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

@@ -4,7 +4,7 @@
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
         <a href="/admin/babyfact/create"><button class="btn btn-sm btn-success">Add baby fact <i class="fa fa-plus"></i></button></a>
     </div>
-    <section class="col-lg-7 connectedSortable">
+    <section class="col-lg-12 connectedSortable">
 
         <div class="box box-primary">
             <div class="box-header">
@@ -23,8 +23,12 @@
                 @if(count($babyFact) > 0)
                     @foreach($babyFact as $key => $value)
                         <div class="well">
-                            <p class="text">{{ ($key+ 1).". ".$value->fact}}</p>
-                            <a href="babyfact/{{ $value->id }}/edit"><button  class="btn btn-warning btn-sm">Edit</button></a>
+                            <p class="text">{!! ($key+ 1).". ".$value->fact !!}</p>
+                            <div class="row">
+                                <div class="col-md-3 col-md-offset-9">
+                                    <a href="babyfact/{{ $value->id }}/edit"><button  class="pull-right btn btn-warning btn-sm">Edit</button></a>
+                                </div>
+                            </div>
                         </div>
                     @endforeach
                 @else

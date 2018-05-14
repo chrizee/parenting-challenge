@@ -4,10 +4,10 @@
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
         <a href="/admin/babyfact"><button class="btn btn-sm btn-default">Go back <i class="fa fa-link"></i></button></a>
     </div>
-    <section class="col-lg-7 connectedSortable">
+    <section class="col-lg-12 connectedSortable">
         <div class="box box-primary">
             <div class="box-header">
-                <i class="fa fa-comments-o"></i>
+                <i class="fa fa-edit"></i>
 
                 <h3 class="box-title">Baby Fact</h3>
 

@@ -51,8 +51,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name' => 'required|string|max:191',
+            'email' => 'required|string|email|max:191|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'pic' => 'image|nullable|max:1999'
         ]);
@@ -68,16 +68,11 @@ class RegisterController extends Controller
     {
         //handle file upload
         if($request->hasFile('pic')) {
-            //filename with extension
-            $filenameWithExt = $request->file('pic')->getClientOriginalName();
-            //get only the filename
-            //$filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            //GET only the extension
             $extension = $request->file('pic')->getClientOriginalExtension();
             $fileNameToStore = 'user_'.time().'.'.$extension; //make he filename unique
             $path = $request->file('pic')->storeAs('public/user_images', $fileNameToStore);
         } else {
-            $fileNameToStore = 'nouser.png';
+            $fileNameToStore = $this->noUser;
         }
         
         $data = $request->all();

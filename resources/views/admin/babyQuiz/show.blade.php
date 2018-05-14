@@ -21,20 +21,23 @@
             <div class="box-body">
                 @if(count($babyQuiz) > 0)
                     <div class="well">
-                        <p class="text">Question: {{ $babyQuiz->question}}?</p>
+                        Question: {!! $babyQuiz->question !!}
                         <ol type="A">
                             <li>{{ $babyQuiz->optionA }}</li>
                             <li>{{ $babyQuiz->optionB }}</li>
                             <li>{{ $babyQuiz->optionC }}</li>
-                            <li>{{ $babyQuiz->optionD }}</li>
-                            <li>{{ $babyQuiz->optionE }}</li>
                         </ol>
                         <p class="text">Answer: {{ $babyQuiz->answer }}</p>
-                        <a href="/admin/babyquiz/{{ $babyQuiz->id }}/edit"><button  class="btn btn-primary btn-sm">Edit</button></a>
-                        {{ Form::open(['action' => ['BabyQuizzesController@destroy', $babyQuiz->id], 'method' => "POST", 'class' => 'pull-right']) }}
-                        {{ Form::hidden('_method', "DELETE") }}
-                        {{ Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) }}
-                        {{ Form::close() }}
+                        <P class="text text-info">Tip: {{ $babyQuiz->tip }}</P>
+                        <div class="row">
+                            <div class="col-md-3 col-md-offset-9">
+                                <a href="/admin/babyquiz/{{ $babyQuiz->id }}/edit"><button  class="btn btn-primary btn-sm">Edit</button></a>
+                                {{ Form::open(['action' => ['BabyQuizzesController@destroy', $babyQuiz->id], 'method' => "POST", 'class' => 'pull-right']) }}
+                                {{ Form::hidden('_method', "DELETE") }}
+                                {{ Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) }}
+                                {{ Form::close() }}
+                            </div>
+                        </div>
                     </div>
                 @else
                     <p>select a valid quiz.</p>
@@ -64,6 +67,9 @@
                 </div>
             </div>
             <div class="box-body">
+                <div class="center-block">
+                    <img class="center-block thumbnail img-responsive" src="/storage/quiz/baby/{{ $babyQuiz->image }}" alt="question image" />
+                </div>
                 @if(count($babyQuiz) > 0)
                     <div class="well-sm">
                         <div class="table-responsive">

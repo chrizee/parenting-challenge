@@ -23,17 +23,19 @@
                 @if(count($parentingQuiz) > 0)
                     @foreach($parentingQuiz as $key => $value)
                         <div class="well">
-                            <p class="text">{{ ($key+ 1).". ".$value->question}}?</p>
+                            <p class="text">{!! ($key+ 1).". ".$value->question !!}</p>
                             <ol type="A">
                                 <li>{{ $value->optionA }}</li>
                                 <li>{{ $value->optionB }}</li>
                                 <li>{{ $value->optionC }}</li>
-                                <li>{{ $value->optionD }}</li>
-                                <li>{{ $value->optionE }}</li>
                             </ol>
-                            <p class="text">Answer: {{ $value->answer }}</p>
-                            <a href="parentingquiz/{{ $value->id }}"><button  class="btn btn-info btn-sm">View</button></a>
-                            <a href="parentingquiz/{{ $value->id }}/edit"><button  class="btn btn-warning btn-sm">Edit</button></a>
+                            <p class="text">Answer: {!! $value->answer !!}
+                            <div class="row">
+                                <div class="col-md-3 col-md-offset-9">
+                                    <a href="parentingquiz/{{ $value->id }}"><button  class="btn btn-info btn-sm">View</button></a>
+                                    <a href="parentingquiz/{{ $value->id }}/edit"><button  class="btn btn-warning btn-sm">Edit</button></a>
+                                </div>
+                            </div>
                         </div>
                     @endforeach
                 @else

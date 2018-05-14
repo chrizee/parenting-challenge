@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\ParentingTips;
 
 class ParentingTipsController extends Controller
 {
+    private $viewPath = 'admin.parentingTips.';
     public function __construct()
     {
         $this->middleware('auth');
@@ -25,7 +27,7 @@ class ParentingTipsController extends Controller
             'title2' => 'Tips',
             'parentingTips' => $parentingTips
         ];
-        return view('admin.parentingTips.index')->with($data);
+        return view($this->viewPath.'index')->with($data);
     }
 
     /**
@@ -39,7 +41,7 @@ class ParentingTipsController extends Controller
             'title1' => 'Add parenting Tips',
             'title2' => 'Add'
         ];
-        return view('admin.parentingTips.create')->with($data);
+        return view($this->viewPath.'create')->with($data);
     }
 
     /**
@@ -51,11 +53,20 @@ class ParentingTipsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'tip' => 'required|string'
+            'tip' => 'required|string',
+            'image' => 'image|required|max:1999'
         ]);
 
+        if($request->hasFile('image')) {
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = 'tip_parent_'.time().'.'.$extension; //make he filename unique
+            $path = $request->file('image')->storeAs('public/tips/parent', $fileNameToStore);
+        } else {
+            $fileNameToStore = $this->noImage;
+        }
         $parentingTips = new ParentingTips;
         $parentingTips->tip = $request->input('tip');
+        $parentingTips->image = $fileNameToStore;
         $parentingTips->save();
 
         return redirect('admin/parentingtips')->with('success', "Tip added");
@@ -78,7 +89,7 @@ class ParentingTipsController extends Controller
             'title2' => 'Tips',
             'parentingTips' => $parentingTips
         ];
-        return view('admin.parentingTips.show')->with($data);
+        return view($this->viewPath.'show')->with($data);
     }
 
     /**
@@ -98,7 +109,7 @@ class ParentingTipsController extends Controller
             'title2' => 'Edit',
             'parentingTip' => $parentingTip
         ];
-        return view('admin.parentingTips.edit')->with($data);
+        return view($this->viewPath.'edit')->with($data);
     }
 
     /**
@@ -111,14 +122,24 @@ class ParentingTipsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'tip' => 'required|string'
+            'tip' => 'required|string',
+            'image' => 'image|nullable|max:1999'
         ]);
-
         $parentingTips = ParentingTips::find($id);
+
+        if($request->hasFile('image')) {
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = 'tip_parent_'.time().'.'.$extension; //make he filename unique
+            $path = $request->file('image')->storeAs('public/tips/parent', $fileNameToStore);
+            if($parentingTips->image != $this->noImage) {
+                Storage::delete("public/tips/parent/".$parentingTips->image);
+            }
+            $parentingTips->image = $fileNameToStore;
+        }
         $parentingTips->tip = $request->input('tip');
         $parentingTips->save();
 
-        return redirect('admin/parentingtips')->with('success', "Tip updated");
+        return redirect('admin/parentingtips/'.$id)->with('success', "Tip updated");
     }
 
     /**
@@ -133,6 +154,9 @@ class ParentingTipsController extends Controller
         //to deleter permanently
         //$parentingTips->delete();
         //change the status instead of deleting permanently
+        if($parentingTips->image != $this->noImage) {
+            Storage::delete('public/tips/parent/'.$parentingTips->image);
+        }
         $parentingTips->status = '0';
         $parentingTips->save();
         return redirect('admin/parentingtips')->with('success', 'Tip deleted');

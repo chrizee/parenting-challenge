@@ -4,7 +4,7 @@
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
         <a href="/admin/babyquiz"><button class="btn btn-sm btn-default"><i class="fa fa-arrow-circle-left"></i> Back</button></a>
     </div>
-    <section class="col-lg-7 connectedSortable">
+    <section class="col-lg-12 connectedSortable">
         <div class="box box-primary">
             <div class="box-header">
                 <i class="fa fa-comments-o"></i>
@@ -19,88 +19,76 @@
                 </div>
             </div>
             <div class="box-body">
-                {!! Form::open(['action' => 'BabyQuizzesController@store', 'method' => "POST"]) !!}
+                {!! Form::open(['action' => 'BabyQuizzesController@store', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ Form::label('question', 'Question') }}
+                            {{Form::textarea('question', '', ['id' => 'article-ckeditor', 'class' => 'form-control'])}}
+                        </div>
 
-                <div class="form-group">
-                    <label>Question</label>
-                    {{Form::textarea('question', '', ['id' => 'article-ckeditor', 'class' => 'form-control'])}}
-                </div>
-
-                <div class="options">
-                    <div class="form-group">
-                        {{Form::label('optionA', 'Option A')}}
-                        <div class="input-group">
-                            {{Form::text('optionA', '', ['class' => 'form-control'])}}
+                        <div class="form-group options">
+                            {{Form::label('tip', 'Tip')}}
+                            <div class="input-group">
+                                {{Form::text('tip', '', ['class' => 'form-control'])}}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="options">
-                    <div class="form-group">
-                        {{ Form::label('optionB', 'Option B')}}
-                        <div class="input-group">
-                            {{Form::text('optionB', '', ['class' => 'form-control'])}}
+                    <div class="col-md-6">
+
+                        <div class="form-group options">
+                            {{Form::label('optionA', 'Option A')}}
+                            <div class="input-group">
+                                {{Form::text('optionA', '', ['class' => 'form-control'])}}
+                            </div>
+                        </div>
+
+                        <div class="form-group options">
+                            {{ Form::label('optionB', 'Option B')}}
+                            <div class="input-group">
+                                {{Form::text('optionB', '', ['class' => 'form-control'])}}
+                            </div>
+                        </div>
+
+                        <div class="form-group options">
+                            {{ Form::label('optionC', 'Option C')}}
+                            <div class="input-group">
+                                {{Form::text('optionC', '', ['class' => 'form-control'])}}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="radio">
+                                <label>Select the answer &nbsp;</label>
+                                <label>
+                                    {{ Form::radio('answer', 'A') }} A
+                                </label>
+                                <label>
+                                    {{ Form::radio('answer', 'B') }} B
+                                </label>
+                                <label>
+                                    {{ Form::radio('answer', 'C') }} C
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{Form::label('image', 'Image')}}
+                            <div class="input-group">
+                                {{Form::file('image', ['class' => 'form-control'])}}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="options">
-                    <div class="form-group">
-                        {{ Form::label('optionC', 'Option C')}}
-                        <div class="input-group">
-                            {{Form::text('optionC', '', ['class' => 'form-control'])}}
-                        </div>
+                    <div class="box-footer">
+                        {{ Form::submit('Add', ['class' => 'pull-right btn btn-success btn-sm']) }}
                     </div>
-                </div>
-
-                <div class="options">
-                    <div class="form-group">
-                        {{ Form::label('optionD', 'Option D')}}
-                        <div class="input-group">
-                            {{Form::text('optionD', '', ['class' => 'form-control'])}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="options">
-                    <div class="form-group">
-                        {{ Form::label('optionE', 'Option E')}}
-                        <div class="input-group">
-                            {{Form::text('optionE', '', ['class' => 'form-control'])}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="radio">
-                        <label>Select the answer &nbsp;</label>
-                        <label>
-                            {{ Form::radio('answer', 'A') }} A
-                        </label>
-                        <label>
-                            {{ Form::radio('answer', 'B') }} B
-                        </label>
-                        <label>
-                            {{ Form::radio('answer', 'C') }} C
-                        </label>
-                        <label>
-                            {{ Form::radio('answer', 'D') }} D
-                        </label>
-                        <label>
-                            {{ Form::radio('answer', 'E') }} E
-                        </label>
-                    </div>
-                </div>
-                <div class="box-footer">
-                    {{ Form::submit('Send', ['class' => 'btn btn-success btn-sm']) }}
-                </div>
                 {!! Form::close() !!}
             </div>
 
         </div>
 
     </section>
-
     <!-- iCheck -->
     <script src="{{ asset('plugins/iCheck/icheck.min.js') }}"></script>
     <script type="text/javascript">

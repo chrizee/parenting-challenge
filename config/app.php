@@ -13,9 +13,10 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Parenting quiz'),
     'version' => env('APP_VERSION', '1.0'),
     'designer' => env('APP_DESIGNER', 'Valence web'),
+    'author' => env('APP_AUTHOR', 'CEO'),
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -165,6 +166,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Unisharp\Ckeditor\ServiceProvider::class,
 
         /*
          * Package Service Providers...

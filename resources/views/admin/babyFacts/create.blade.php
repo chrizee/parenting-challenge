@@ -22,13 +22,13 @@
                 {!! Form::open(['action' => 'BabyFactsController@store', 'method' => "POST"]) !!}
 
                 <div class="form-group">
-                    <label>Fact</label>
+                    {{ Form::label('fact', 'Fact') }}
                     {{Form::textarea('fact', '', ['id' => 'article-ckeditor', 'class' => 'form-control'])}}
                 </div>
 
 
                 <div class="box-footer">
-                    {{ Form::submit('Send', ['class' => 'btn btn-success btn-sm']) }}
+                    {{ Form::submit('Add Fact', ['class' => 'btn btn-success btn-sm']) }}
                 </div>
                 {!! Form::close() !!}
             </div>

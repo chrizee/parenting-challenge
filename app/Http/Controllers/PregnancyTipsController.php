@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\PregnancyTips;
 
 class PregnancyTipsController extends Controller
 {
+    private $viewPath = 'admin.pregnancyTips.';
     public function __construct()
     {
         $this->middleware('auth');
@@ -25,7 +27,7 @@ class PregnancyTipsController extends Controller
             'title2' => 'Tips',
             'pregnancyTips' => $pregnancyTips
         ];
-        return view('admin.pregnancyTips.index')->with($data);
+        return view($this->viewPath.'index')->with($data);
     }
 
     /**
@@ -39,7 +41,7 @@ class PregnancyTipsController extends Controller
             'title1' => 'Add pregnancy Tips',
             'title2' => 'Add'
         ];
-        return view('admin.pregnancyTips.create')->with($data);
+        return view($this->viewPath.'create')->with($data);
     }
 
     /**
@@ -51,11 +53,20 @@ class PregnancyTipsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'tip' => 'required|string'
+            'tip' => 'required|string',
+            'image' => 'required|image|max:1999'
         ]);
-
+        
+        if($request->hasFile('image')) {
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = 'tip_pregnancy_'.time().'.'.$extension; //make he filename unique
+            $path = $request->file('image')->storeAs('public/tips/pregnancy', $fileNameToStore);
+        } else {
+            $fileNameToStore = $this->noImage;
+        }
         $pregnancyTips = new PregnancyTips;
         $pregnancyTips->tip = $request->input('tip');
+        $pregnancyTips->image = $fileNameToStore;
         $pregnancyTips->save();
 
         return redirect('admin/pregnancytips')->with('success', "Tip added");
@@ -78,7 +89,7 @@ class PregnancyTipsController extends Controller
             'title2' => 'Tips',
             'pregnancyTips' => $pregnancyTips
         ];
-        return view('admin.pregnancyTips.show')->with($data);
+        return view($this->viewPath.'show')->with($data);
     }
 
     /**
@@ -98,7 +109,7 @@ class PregnancyTipsController extends Controller
             'title2' => 'Edit',
             'pregnancyTip' => $pregnancyTip
         ];
-        return view('admin.pregnancyTips.edit')->with($data);
+        return view($this->viewPath.'edit')->with($data);
     }
 
     /**
@@ -111,14 +122,25 @@ class PregnancyTipsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'tip' => 'required|string'
+            'tip' => 'required|string',
+            'image' => 'image|nullable|max:1999'
         ]);
 
         $pregnancyTips = PregnancyTips::find($id);
+
+        if($request->hasFile('image')) {
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = 'tip_pregnancy_'.time().'.'.$extension; //make he filename unique
+            $path = $request->file('image')->storeAs('public/tips/pregnancy', $fileNameToStore);
+            if($pregnancyTips->image != $this->noImage) {
+                Storage::delete("public/tips/pregnancy/".$pregnancyTips->image);
+            }
+            $pregnancyTips->image = $fileNameToStore;
+        }
         $pregnancyTips->tip = $request->input('tip');
         $pregnancyTips->save();
 
-        return redirect('admin/pregnancytips')->with('success', "Tip updated");
+        return redirect('admin/pregnancytips/'.$id)->with('success', "Tip updated");
     }
 
     /**
@@ -133,6 +155,9 @@ class PregnancyTipsController extends Controller
         //to deleter permanently
         //$pregnancyTips->delete();
         //change the status instead of deleting permanently
+        if($pregnancyTips->image != $this->noImage) {
+            Storage::delete('public/tips/pregnancy/'.$pregnancyTips->image);
+        }
         $pregnancyTips->status = '0';
         $pregnancyTips->save();
         return redirect('admin/pregnancytips')->with('success', 'Tip deleted');

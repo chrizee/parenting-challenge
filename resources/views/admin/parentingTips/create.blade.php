@@ -19,15 +19,22 @@
                 </div>
             </div>
             <div class="box-body">
-                {!! Form::open(['action' => 'ParentingTipsController@store', 'method' => "POST"]) !!}
+                {!! Form::open(['action' => 'ParentingTipsController@store', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
 
                 <div class="form-group">
-                    <label>Tip</label>
+                    {{Form::label('tip', 'Tip')}}
                     {{Form::textarea('tip', '', ['id' => 'article-ckeditor', 'class' => 'form-control'])}}
                 </div>
-                
+
+                <div class="form-group">
+                    {{Form::label('image', 'Image')}}
+                    <div class="input-group">
+                        {{Form::file('image', ['class' => 'form-control'])}}
+                    </div>
+                </div>
+
                 <div class="box-footer">
-                    {{ Form::submit('Send', ['class' => 'btn btn-success btn-sm']) }}
+                    {{ Form::submit('Add', ['class' => 'pull-right btn btn-success btn-sm']) }}
                 </div>
                 {!! Form::close() !!}
             </div>

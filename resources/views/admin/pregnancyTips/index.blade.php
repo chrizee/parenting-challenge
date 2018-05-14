@@ -10,7 +10,7 @@
             <div class="box-header">
                 <i class="fa fa-comments-o"></i>
 
-                <h3 class="box-title">Pregnancy Tips <small class="text text-sm text-info">{{ count($pregnancyTips) }} {{  (count($pregnancyTips) == 1) ? 'tip' : 'tips' }} </small></h3>
+                <h3 class="box-title">Pregnancy Tip <small class="text text-sm text-info">{{ count($pregnancyTips) }} {{  (count($pregnancyTips) == 1) ? 'tip' : 'tips' }} </small></h3>
 
                 <div class="pull-right box-tools">
                     <button type="button" class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -23,12 +23,17 @@
                 @if(count($pregnancyTips) > 0)
                     @foreach($pregnancyTips as $key => $value)
                         <div class="well">
-                            <p class="text">{{ ($key+ 1).". ".$value->tip}}</p>
-                            <a href="pregnancytips/{{ $value->id }}/edit"><button  class="btn btn-warning btn-sm">Edit</button></a>
+                            {!! ($key+ 1).". ".$value->tip !!}
+                            <div class="row no-margin">
+                                <div class="col-md-3 col-md-offset-9">
+                                    <a href="pregnancytips/{{ $value->id }}"><button  class="btn btn-success btn-sm">View</button></a>
+                                    <a href="pregnancytips/{{ $value->id }}/edit"><button  class="btn btn-warning btn-sm">Edit</button></a>
+                                </div>
+                            </div>
                         </div>
                     @endforeach
                 @else
-                    <p>No tip yet.</p>
+                    <p>No tip.</p>
                 @endif
             </div>
             <!-- /.chat -->

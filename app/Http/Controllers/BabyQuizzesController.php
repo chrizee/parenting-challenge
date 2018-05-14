@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\BabyQuiz;
 
 class BabyQuizzesController extends Controller
 {
 
+    private $viewPath = "admin.babyQuiz.";
+
     public function __construct()
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +29,7 @@ class BabyQuizzesController extends Controller
             'title2' => 'Quiz',
             'babyQuiz' => $babyQuiz
         ];
-        return view('admin.babyQuiz.index')->with($data);
+        return view($this->viewPath.'index')->with($data);
     }
 
     /**
@@ -39,7 +43,7 @@ class BabyQuizzesController extends Controller
             'title1' => 'Add baby Quiz',
             'title2' => 'Add'
         ];
-        return view('admin.babyQuiz.create')->with($data);
+        return view($this->viewPath.'create')->with($data);
     }
 
     /**
@@ -50,24 +54,33 @@ class BabyQuizzesController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $this->validate($request, [
             'question' => 'required|string',
             'optionA' => 'required|string|max:191',
             'optionB' => 'required|string|max:191',
             'optionC' => 'required|string|max:191',
-            'optionD' => 'required|string|max:191',
-            'optionE' => 'required|string|max:191',
-            'answer' => 'required|string|max:1'
+            'tip' => 'required|string',
+            'answer' => 'required|string|max:1',
+            'image' => 'required|image|max:1999'
         ]);
+
+        if($request->hasFile('image')) {
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = 'quiz_baby_'.time().'.'.$extension; //make he filename unique
+            $path = $request->file('image')->storeAs('public/quiz/baby', $fileNameToStore);
+        } else {
+            $fileNameToStore = $this->noImage;
+        }
 
         $babyQuiz = new BabyQuiz;
         $babyQuiz->question = $request->input('question');
         $babyQuiz->optionA = $request->input('optionA');
         $babyQuiz->optionB = $request->input('optionB');
         $babyQuiz->optionC = $request->input('optionC');
-        $babyQuiz->optionD = $request->input('optionD');
-        $babyQuiz->optionE = $request->input('optionE');
+        $babyQuiz->tip = $request->input('tip');
         $babyQuiz->answer = $request->input('answer');
+        $babyQuiz->image = $fileNameToStore;
         $babyQuiz->save();
 
         return redirect('admin/babyquiz')->with('success', "Question added");
@@ -82,15 +95,15 @@ class BabyQuizzesController extends Controller
     public function show($id)
     {
         $babyQuiz = BabyQuiz::find($id);
-        if(empty($babyQuiz) || $babyQuiz->status == 0) {
+        if($babyQuiz->status == 0) {
             return redirect('/admin/babyquiz')->with('error', "Question does not exist.");
         }
         $data = [
-            'title1' => 'Parenting Quiz',
+            'title1' => 'Baby Quiz',
             'title2' => 'Quiz',
             'babyQuiz' => $babyQuiz
         ];
-        return view('admin.babyQuiz.show')->with($data);
+        return view($this->viewPath.'show')->with($data);
     }
 
     /**
@@ -102,7 +115,7 @@ class BabyQuizzesController extends Controller
     public function edit($id)
     {
         $babyQuiz = BabyQuiz::find($id);
-        if(empty($babyQuiz) || $babyQuiz->status == 0) {
+        if($babyQuiz->status == 0) {
             return redirect('/admin/babyquiz')->with('error', "Question does not exist.");
         }
         $data = [
@@ -110,7 +123,7 @@ class BabyQuizzesController extends Controller
             'title2' => 'Edit',
             'babyQuiz' => $babyQuiz
         ];
-        return view('admin.babyQuiz.edit')->with($data);
+        return view($this->viewPath.'edit')->with($data);
     }
 
     /**
@@ -127,22 +140,31 @@ class BabyQuizzesController extends Controller
             'optionA' => 'required|string|max:191',
             'optionB' => 'required|string|max:191',
             'optionC' => 'required|string|max:191',
-            'optionD' => 'required|string|max:191',
-            'optionE' => 'required|string|max:191',
-            'answer' => 'required|string|max:1'
+            'tip' => 'required|string',
+            'answer' => 'required|string|max:1',
+            'image' => 'image|nullable|max:1999'
         ]);
 
         $babyQuiz = BabyQuiz::find($id);
+        if($request->hasFile('image')) {
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = 'quiz_baby_'.time().'.'.$extension; //make he filename unique
+            $path = $request->file('image')->storeAs('public/quiz/baby', $fileNameToStore);
+            if($babyQuiz->image != $this->noImage) {
+                Storage::delete("public/quiz/baby/".$babyQuiz->image);
+            }
+            $babyQuiz->image = $fileNameToStore;
+        }
+
         $babyQuiz->question = $request->input('question');
         $babyQuiz->optionA = $request->input('optionA');
         $babyQuiz->optionB = $request->input('optionB');
         $babyQuiz->optionC = $request->input('optionC');
-        $babyQuiz->optionD = $request->input('optionD');
-        $babyQuiz->optionE = $request->input('optionE');
+        $babyQuiz->tip = $request->input('tip');
         $babyQuiz->answer = $request->input('answer');
         $babyQuiz->save();
 
-        return redirect('admin/babyquiz')->with('success', "Question updated");
+        return redirect('admin/babyquiz/'.$id)->with('success', "Question updated");
     }
 
     /**
@@ -158,6 +180,9 @@ class BabyQuizzesController extends Controller
         //$babyQuiz->delete();
         //change the status instead of deleting permanently
         $babyQuiz->status = '0';
+        if($babyQuiz->image != $this->noImage) {
+            Storage::delete('public/quiz/baby/'.$babyQuiz->image);
+        }
         $babyQuiz->save();
         return redirect('admin/babyquiz')->with('success', 'Question deleted');
     }

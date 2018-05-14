@@ -19,9 +19,9 @@ class CreateBabyQuizzesTable extends Migration
             $table->string('optionA');
             $table->string('optionB');
             $table->string('optionC');
-            $table->string('optionD');
-            $table->string('optionE')->nullable();
-            $table->enum('answer', ['A', 'B', 'C', 'D', 'E']);
+            $table->enum('answer', ['A', 'B', 'C']);
+            $table->mediumText('tip');
+            $table->string('image');
             $table->integer('right')->default(0);   //number of times correctly answered
             $table->integer('wrong')->default(0);   //number of times wrongly answered
             $table->enum('status', ['0', '1'])->default('1')->comment('0: deleted, 1: active');

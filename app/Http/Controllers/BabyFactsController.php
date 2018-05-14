@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class BabyFactsController extends Controller
 {
+    private  $viewPath = 'admin.babyFacts.';
     public function __construct()
     {
         $this->middleware('auth');
@@ -24,7 +25,7 @@ class BabyFactsController extends Controller
             'title2' => "Baby Fact",
             'babyFact' => $babyFact,
         ];
-        return view('admin.babyFacts.index')->with($data);
+        return view($this->viewPath.'index')->with($data);
     }
 
     /**
@@ -38,7 +39,7 @@ class BabyFactsController extends Controller
             'title1' => "Baby Facts",
             'title2' => "Baby Fact"
         ];
-        return view('admin.babyFacts.create')->with($data);
+        return view($this->viewPath.'create')->with($data);
     }
 
     /**
@@ -77,7 +78,7 @@ class BabyFactsController extends Controller
             'title2' => 'Fact',
             'babyFact' => $babyFact
         ];
-        return view('admin.babyFacts.show')->with($data);
+        //return view($this->viewPath.'index')->with($data);
     }
 
     /**
@@ -97,7 +98,7 @@ class BabyFactsController extends Controller
             'title2' => 'Edit',
             'babyFact' => $babyFact
         ];
-        return view('admin.babyFacts.edit')->with($data);
+        return view($this->viewPath.'edit')->with($data);
     }
 
     /**
@@ -116,7 +117,7 @@ class BabyFactsController extends Controller
         $babyFact = BabyFacts::find($id);
         $babyFact->fact = $request->input('fact');
         $babyFact->save();
-        return redirect('admin/babyfact');
+        return redirect('admin/babyfact/')->with('success', 'Fact updated successfully');
     }
 
     /**

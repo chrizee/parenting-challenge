@@ -21,15 +21,16 @@
             <div class="box-body">
                 @if(count($parentingQuiz) > 0)
                         <div class="well">
-                            <p class="text">Question: {{ $parentingQuiz->question}}?</p>
+                            Question: {!! $parentingQuiz->question !!}
                             <ol type="A">
                                 <li>{{ $parentingQuiz->optionA }}</li>
                                 <li>{{ $parentingQuiz->optionB }}</li>
                                 <li>{{ $parentingQuiz->optionC }}</li>
-                                <li>{{ $parentingQuiz->optionD }}</li>
-                                <li>{{ $parentingQuiz->optionE }}</li>
                             </ol>
                             <p class="text">Answer: {{ $parentingQuiz->answer }}</p>
+                            <P class="text text-info">Tip: {{ $parentingQuiz->tip }}</P>
+                            <h4 class="text text-bold">Description: </h4>
+                            <blockquote class="blockquote-yellow">{{ $parentingQuiz->description }}</blockquote>
                             <a href="/admin/parentingquiz/{{ $parentingQuiz->id }}/edit"><button  class="btn btn-primary btn-sm">Edit</button></a>
                             {{ Form::open(['action' => ['ParentingQuizzesController@destroy', $parentingQuiz->id], 'method' => "POST", 'class' => 'pull-right']) }}
                                 {{ Form::hidden('_method', "DELETE") }}
@@ -64,6 +65,9 @@
                 </div>
             </div>
             <div class="box-body">
+                <div class="center-block">
+                    <img class="center-block thumbnail img-responsive" src="/storage/quiz/parent/{{ $parentingQuiz->image }}" alt="question image" />
+                </div>
                 @if(count($parentingQuiz) > 0)
                     <div class="well-sm">
                         <div class="table-responsive">

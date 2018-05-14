@@ -23,7 +23,8 @@
                 @if(count($parentingTips) > 0)
                     @foreach($parentingTips as $key => $value)
                         <div class="well">
-                            <p class="text">{{ ($key+ 1).". ".$value->tip}}</p>
+                            {!! ($key+ 1).". ".trim($value->tip) !!}
+                            <a href="parentingtips/{{ $value->id }}"><button  class="btn btn-primary btn-sm">View</button></a>
                             <a href="parentingtips/{{ $value->id }}/edit"><button  class="btn btn-warning btn-sm">Edit</button></a>
                         </div>
                     @endforeach

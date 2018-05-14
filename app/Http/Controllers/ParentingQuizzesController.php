@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\ParentingQuiz;
 
 class ParentingQuizzesController extends Controller
 {
+    private $viewPath = "admin.parentingQuiz.";
 
     public function __construct()
     {
@@ -26,7 +28,7 @@ class ParentingQuizzesController extends Controller
             'title2' => 'Quiz',
             'parentingQuiz' => $parentingQuiz
         ];
-        return view('admin.parentingQuiz.index')->with($data);
+        return view($this->viewPath.'index')->with($data);
     }
 
     /**
@@ -40,7 +42,7 @@ class ParentingQuizzesController extends Controller
             'title1' => 'Add parenting Quiz',
             'title2' => 'Add'
         ];
-        return view('admin.parentingQuiz.create')->with($data);
+        return view($this->viewPath.'create')->with($data);
     }
 
     /**
@@ -51,24 +53,35 @@ class ParentingQuizzesController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $this->validate($request, [
             'question' => 'required|string',
             'optionA' => 'required|string|max:191',
             'optionB' => 'required|string|max:191',
             'optionC' => 'required|string|max:191',
-            'optionD' => 'required|string|max:191',
-            'optionE' => 'required|string|max:191',
-            'answer' => 'required|string|max:1'
+            'tip' => 'required|string',
+            'description' => 'required|string',
+            'answer' => 'required|string|max:1',
+            'image' => 'required|image|max:1999'
         ]);
+
+        if($request->hasFile('image')) {
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = 'quiz_parent_'.time().'.'.$extension; //make he filename unique
+            $path = $request->file('image')->storeAs('public/quiz/parent', $fileNameToStore);
+        } else {
+            $fileNameToStore = $this->noImage;
+        }
 
         $parentingQuiz = new ParentingQuiz;
         $parentingQuiz->question = $request->input('question');
         $parentingQuiz->optionA = $request->input('optionA');
         $parentingQuiz->optionB = $request->input('optionB');
         $parentingQuiz->optionC = $request->input('optionC');
-        $parentingQuiz->optionD = $request->input('optionD');
-        $parentingQuiz->optionE = $request->input('optionE');
+        $parentingQuiz->tip = $request->input('tip');
+        $parentingQuiz->description = $request->input('description');
         $parentingQuiz->answer = $request->input('answer');
+        $parentingQuiz->image = $fileNameToStore;
         $parentingQuiz->save();
 
         return redirect('admin/parentingquiz')->with('success', "Question added");
@@ -91,7 +104,7 @@ class ParentingQuizzesController extends Controller
             'title2' => 'Quiz',
             'parentingQuiz' => $parentingQuiz
         ];
-        return view('admin.parentingQuiz.show')->with($data);
+        return view($this->viewPath.'show')->with($data);
     }
 
     /**
@@ -111,7 +124,7 @@ class ParentingQuizzesController extends Controller
             'title2' => 'Edit',
             'parentingQuiz' => $parentingQuiz
         ];
-        return view('admin.parentingQuiz.edit')->with($data);
+        return view($this->viewPath.'edit')->with($data);
     }
 
     /**
@@ -128,22 +141,33 @@ class ParentingQuizzesController extends Controller
             'optionA' => 'required|string|max:191',
             'optionB' => 'required|string|max:191',
             'optionC' => 'required|string|max:191',
-            'optionD' => 'required|string|max:191',
-            'optionE' => 'required|string|max:191',
-            'answer' => 'required|string|max:1'
+            'tip' => 'required|string',
+            'description' => 'required|string',
+            'answer' => 'required|string|max:1',
+            'image' => 'image|nullable|max:1999'
         ]);
 
         $parentingQuiz = ParentingQuiz::find($id);
+        if($request->hasFile('image')) {
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = 'quiz_parent_'.time().'.'.$extension; //make he filename unique
+            $path = $request->file('image')->storeAs('public/quiz/parent', $fileNameToStore);
+            if($parentingQuiz->image != $this->noImage) {
+                Storage::delete("public/quiz/parent/".$parentingQuiz->image);
+            }
+            $parentingQuiz->image = $fileNameToStore;
+        }
+
         $parentingQuiz->question = $request->input('question');
         $parentingQuiz->optionA = $request->input('optionA');
         $parentingQuiz->optionB = $request->input('optionB');
         $parentingQuiz->optionC = $request->input('optionC');
-        $parentingQuiz->optionD = $request->input('optionD');
-        $parentingQuiz->optionE = $request->input('optionE');
+        $parentingQuiz->tip = $request->input('tip');
+        $parentingQuiz->description = $request->input('description');
         $parentingQuiz->answer = $request->input('answer');
         $parentingQuiz->save();
 
-        return redirect('admin/parentingquiz')->with('success', "Question updated");
+        return redirect('admin/parentingquiz/'.$id)->with('success', "Question updated");
     }
 
     /**
@@ -159,6 +183,9 @@ class ParentingQuizzesController extends Controller
         //$parentingQuiz->delete();
         //change the status instead of deleting permanently
         $parentingQuiz->status = '0';
+        if($parentingQuiz->image != $this->noImage) {
+            Storage::delete('public/quiz/parent/'.$parentingQuiz->image);
+        }
         $parentingQuiz->save();
         return redirect('admin/parentingquiz')->with('success', 'Question deleted');
     }
