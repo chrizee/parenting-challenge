@@ -35,7 +35,7 @@
                         <button class="btn btn-sm btn-info pull-right edit-about-form">Edit</button>
                     </div>
                     <div class="edit-about-form hidden">
-                        {!! Form::model($pages, ['action' => ['PagesController@updateSetting', $pages->id], 'method' => "POST"]) !!}
+                        {!! Form::model($pages, ['action' => ['Admin\PagesController@updateSetting', $pages->id], 'method' => "POST"]) !!}
                         <div class="form-group">
                             {{ Form::label('about', "About") }}
                             {{ Form::textarea('about', $pages->about, ['id' => 'article-ckeditor', 'class' => 'form-control']) }}
@@ -48,7 +48,7 @@
                         {!! Form::close() !!}
                     </div>
                 @else
-                    {!! Form::open(['action' => 'PagesController@storeSetting', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
+                    {!! Form::open(['action' => 'Admin\PagesController@storeSetting', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
                         <div class="form-group">
                             {{ Form::label('about', "About") }}
                             {{ Form::textarea('about', '', ['id' => 'article-ckeditor', 'class' => 'form-control']) }}
@@ -113,7 +113,7 @@
                         <button class="btn btn-sm btn-info edit-contact-form pull-right">Edit</button>
                     </div>
                     <div class="edit-contact-form hidden">
-                        {!! Form::model($pages, ['action' => ['PagesController@updateSetting', $pages->id], 'method' => "POST"]) !!}
+                        {!! Form::model($pages, ['action' => ['Admin\PagesController@updateSetting', $pages->id], 'method' => "POST"]) !!}
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -163,7 +163,7 @@
                         {!! Form::close() !!}
                     </div>
                 @else
-                    {!! Form::open(['action' => 'PagesController@storeSetting', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
+                    {!! Form::open(['action' => 'Admin\PagesController@storeSetting', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
                         <div class="row">
                             <div class="col-md-6">
 

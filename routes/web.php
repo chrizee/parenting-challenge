@@ -11,37 +11,49 @@
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
 //admin routes
-Route::get('/', 'PagesController@dashboard');
-Route::get('/admin', 'PagesController@dashboard');
-Route::get('/admin/dashboard', 'PagesController@dashboard');
-Route::get('/admin/register', 'PagesController@registerAdmin');
+// adds "admin/" to the uri of the routes in this group
+Route::prefix('admin')->group(function () {
+    Auth::routes();     //auth controllers are not not "/admin" directory and not all of them are with the auth middleware
 
-Route::get('admin/adverts', 'PagesController@adverts');
-Route::get('admin/slider', 'PagesController@slider');
+    Route::namespace('Admin')->group(function () {
+        // Controllers Within The "App\Http\Controllers\Admin" Namespace
+        Route::middleware('auth')->group(function () {
+            //all routes in this group are protected with the auth middleware
+            //Route::get('/', 'PagesController@dashboard');
+            //alternative for the route above since the controller just loads a view with two parameters
+            Route::view('/', 'admin.dashboard', ['title1' => 'Dashboard', 'title2' => 'Dashboard'])->name('dashboard');
+            Route::get('dashboard', 'PagesController@dashboard')->name('dsahboard1');
 
-Route::get('admin/settings', 'PagesController@setting');
-Route::post('admin/settings', 'PagesController@storeSetting');
-Route::put('admin/settings', 'PagesController@updateSetting');
+            Route::get('register', 'PagesController@registerAdmin')->name('register');
 
-Route::get('admin/profile', 'PagesController@profile');
-Route::put('admin/profile', 'PagesController@updateProfile');
+            Route::get('adverts', 'PagesController@adverts')->name('adverts');
+            Route::post('adverts', 'PagesController@storeAdverts')->name('adverts.store');
+            Route::put('adverts/{id}', 'PagesController@updateAdverts')->name('adverts.update');
 
-Route::resource('admin/parentingquiz', "ParentingQuizzesController");
-Route::resource('admin/babyquiz', "BabyQuizzesController");
-Route::resource('admin/babyfact', "BabyFactsController");
-Route::resource('admin/pregnancytips', "PregnancyTipsController");
-Route::resource('admin/parentingtips', "ParentingTipsController");
-Route::resource('admin/childpsychology', "ChildPsychologiesController");
-Route::resource('admin/parentpsychology', "ParentPsychologiesController");
-Route::resource('admin/quotes', "QuotesController");
+            Route::get('settings', 'PagesController@setting')->name('setting');
+            Route::post('settings', 'PagesController@storeSetting');
+            Route::put('settings', 'PagesController@updateSetting');
 
-Auth::routes();
+            Route::get('profile', 'PagesController@profile')->name('profile');
+            Route::put('profile', 'PagesController@updateProfile');
+
+            Route::resource('parentingquiz', "ParentingQuizzesController");
+            Route::resource('babyquiz', "BabyQuizzesController");
+            Route::resource('babyfact', "BabyFactsController");
+            Route::resource('pregnancytips', "PregnancyTipsController");
+            Route::resource('parentingtips', "ParentingTipsController");
+            Route::resource('childpsychology', "ChildPsychologiesController");
+            Route::resource('parentpsychology', "ParentPsychologiesController");
+            Route::resource('quotes', "QuotesController");
+            Route::resource('suscribers', "SuscribersController", ['only' => ['index', 'update', 'destroy']]);
+        });
+    });
+});
+
+
 
 Route::get('/home', 'HomeController@index')->name('home');  //used after registration. cannot find where to override it thats why its still here
 
 //public routes
-Route::get('/', 'publicController@index');
+Route::get('/', 'publicController@index');      //logging admin out redirects here

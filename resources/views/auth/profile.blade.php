@@ -30,7 +30,7 @@
             </ul>
             <div class="tab-content">
                 <div class="active tab-pane" id="settings">
-                    {!! Form::model(Auth::user(), ['action' => ['PagesController@updateProfile', Auth::user()->id], 'class' => 'form-horizontal', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
+                    {!! Form::model(Auth::user(), ['action' => ['Admin\PagesController@updateProfile', Auth::user()->id], 'class' => 'form-horizontal', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
                         {{ Form::hidden('_method', 'PUT') }}
                         {{ csrf_field() }}
                         <div class="form-group">

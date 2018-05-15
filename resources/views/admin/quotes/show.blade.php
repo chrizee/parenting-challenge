@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
-        <a href="/admin/quotes"><button class="btn btn-sm btn-success"><i class="fa fa-arrow-circle-left"></i> Back</button></a>
+        <a href="{{url()->previous()}}"><button class="btn btn-sm btn-success"><i class="fa fa-arrow-circle-left"></i> Back</button></a>
     </div>
     <section class="col-lg-6 connectedSortable">
 
@@ -37,8 +37,8 @@
             </div>
             <!-- /.chat -->
             <div class="box-footer">
-                {{ Form::open(['action' => ['QuotesController@destroy', $quote->id], 'method' => "POST", 'class' => 'pull-right']) }}
-                    {{ Form::hidden('_method', "DELETE") }}
+                {{ Form::open(['action' => ['Admin\QuotesController@destroy', $quote->id], 'method' => "POST", 'class' => 'pull-right']) }}
+                    {{ method_field('DELETE') }}
                     {{ Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) }}
                 {{ Form::close() }}
             </div>
@@ -68,7 +68,7 @@
                         <p class="text text-center text-info">No image</p>
                     @endif
                 </div>
-                {!! Form::model($quote, ['action' => ['QuotesController@update', $quote->id], 'class' => 'hidden editForm', 'method' => "POST", 'enctype' => 'multipart/form-data' ]) !!}
+                {!! Form::model($quote, ['action' => ['Admin\QuotesController@update', $quote->id], 'class' => 'hidden editForm', 'method' => "POST", 'enctype' => 'multipart/form-data' ]) !!}
                     <div class="form-group">
                         {{ Form::label('quote', 'Quote') }}
                         {{ Form::textarea('quote', $quote->quote, ['id' => 'article-ckeditor', 'class' => 'form-control'])}}
@@ -85,7 +85,7 @@
                     </div>
 
                     <div class="box-footer">
-                        {{ Form::hidden('_method', 'PUT')}}
+                        {{ method_field('PUT') }}
                         {{ Form::submit('Update', ['class' => 'pull-right btn btn-success btn-sm']) }}
                     </div>
 

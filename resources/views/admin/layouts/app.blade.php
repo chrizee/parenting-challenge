@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/Admin.css') }}">
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
+    <!-- admin Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset('dist/css/skins/_all-skins.min.css') }}">
     <!-- iCheck -->
@@ -34,6 +34,17 @@
     <script src="{{ asset('plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+    @if($path == 'suscribers' && count($suscribers) > 0)
+        <link rel="stylesheet" href="{{ asset('plugins/datatables/dataTables.bootstrap.css') }}">
+        <script type="text/javascript" src="{{ asset("plugins/datatables/jquery.dataTables.min.js") }}"></script>
+        <script type="text/javascript" src="{{ asset("plugins/datatables/dataTables.bootstrap.min.js") }}"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('table.datatable').DataTable();
+            })
+        </script>
+    @endif
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -127,12 +138,12 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li class="active">
+                    <li class="{{ (in_array($path, ['admin', 'dashboard'])) ? 'active': '' }}">
                         <a href="/admin/dashboard">
-                            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+                            <i class="fa fa-dashboard"></i> <span>Dashboard </span>
                         </a>
                     </li>
-                    <li class="treeview">
+                    <li class="treeview {{ (in_array($path, ['parentingquiz', 'babyquiz'])) ? 'active': '' }}">
                         <a href="#">
                             <i class="fa fa-file-text"></i>
                             <span>Quiz</span>
@@ -145,7 +156,7 @@
                             <li><a href="/admin/babyquiz"><i class="fa fa-circle-o text-red"></i> Baby Quiz</a></li>
                         </ul>
                     </li>
-                    <li class="treeview">
+                    <li class="treeview {{ (in_array($path, ['babyfact', 'quotes', 'parentingtips', 'pregnancytips'])) ? 'active': '' }}">
                         <a href="#">
                             <i class="fa fa-info"></i>
                             <span>Tips &amp; quotes</span>
@@ -155,12 +166,12 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a href="/admin/babyfact"><i class="fa fa-circle-o text-yellow"></i> Baby Fact</a></li>
-                            <li><a href="/admin/quotes"><i class="fa fa-circle-o text-yellow"></i> Quotes</a></li>
+                            <li><a href="/admin/quotes"><i class="fa fa-circle-o text-aqua"></i> Quotes</a></li>
                             <li><a href="/admin/parentingtips"><i class="fa fa-circle-o text-red"></i> Parenting Tips</a></li>
                             <li><a href="/admin/pregnancytips"><i class="fa fa-circle-o text-green"></i> Pregnancy Tips</a></li>
                         </ul>
                     </li>
-                    <li class="treeview">
+                    <li class="treeview {{ (in_array($path, ['parentpsychology', 'childpsychology'])) ? 'active': '' }}">
                         <a href="#">
                             <i class="fa fa-support"></i>
                             <span>Psychology</span>
@@ -173,22 +184,22 @@
                             <li><a href="/admin/childpsychology"><i class="fa fa-circle-o text-red"></i> Child Psychology</a></li>
                         </ul>
                     </li>
-                    <li>
+                    <li class="{{ (in_array($path, ['adverts'])) ? 'active': '' }}">
                         <a href="/admin/adverts">
                             <i class="fa fa-th"></i> <span>Ads</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="{{ (in_array($path, ['settings'])) ? 'active': '' }}">
                         <a href="/admin/settings">
-                            <i class="fa fa-bookmark"></i> <span>Settings</span>
+                            <i class="fa fa-gears"></i> <span>Settings</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="/admin/slider">
-                            <i class="fa fa-photo"></i> <span>Sliders</span>
+                    <li class="{{ (in_array($path, ['suscribers'])) ? 'active': '' }}">
+                        <a href="/admin/suscribers">
+                            <i class="fa fa-users"></i> <span>Suscribers</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="{{ (in_array($path, ['register'])) ? 'active': '' }}">
                         <a href="/admin/register">
                             <i class="fa fa-user"></i> <span>Register</span>
                             <span class="pull-right-container">
@@ -288,15 +299,15 @@
     <script src="{{ asset('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
     <!-- FastClick -->
     <script src="{{ asset('plugins/fastclick/fastclick.js') }}"></script>
-    <!-- AdminLTE App -->
+    <!-- admin App -->
     <script src="{{ asset('dist/js/app.min.js') }}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <!-- admin dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
-    <!-- AdminLTE for demo purposes -->
+    <!-- admin for demo purposes -->
     <script src="{{ asset('dist/js/demo.js') }}"></script>
-    <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
     <script>
         CKEDITOR.replace( 'article-ckeditor' );
     </script>
+    @stack('scripts')
 </body>
 </html>

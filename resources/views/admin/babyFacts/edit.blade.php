@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
-        <a href="/admin/babyfact"><button class="btn btn-sm btn-default">Go back <i class="fa fa-link"></i></button></a>
+        <a href="{{url()->previous()}}"><button class="btn btn-sm btn-default">Go back <i class="fa fa-link"></i></button></a>
     </div>
     <section class="col-lg-12 connectedSortable">
         <div class="box box-primary">
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="box-body">
-                {!! Form::model($babyFact, ['action' => ['BabyFactsController@update', $babyFact->id], 'method' => "POST"]) !!}
+                {!! Form::model($babyFact, ['action' => ['Admin\BabyFactsController@update', $babyFact->id], 'method' => "POST"]) !!}
 
                 <div class="form-group">
                     <label>Fact</label>
@@ -27,12 +27,12 @@
                 </div>
 
                 <div class="box-footer">
-                    {{Form::hidden('_method', 'PUT')}}
+                    {{ method_field('PUT') }}
                     {{ Form::submit('Update', ['class' => 'btn btn-success btn-sm']) }}
                     {!! Form::close() !!}
 
-                    {{ Form::open(['action' => ['BabyFactsController@destroy', $babyFact->id], 'method' => "POST", 'class' => 'pull-right']) }}
-                    {{ Form::hidden('_method', "DELETE") }}
+                    {{ Form::open(['action' => ['Admin\BabyFactsController@destroy', $babyFact->id], 'method' => "POST", 'class' => 'pull-right']) }}
+                    {{ method_field('DELETE') }}
                     {{ Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) }}
                     {{ Form::close() }}
                 </div>

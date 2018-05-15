@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
-        <a href="/admin/parentpsychology"><button class="btn btn-sm btn-default">Go back <i class="fa fa-link"></i></button></a>
+        <a href="{{url()->previous()}}"><button class="btn btn-sm btn-default">Go back <i class="fa fa-link"></i></button></a>
     </div>
     <section class="col-lg-12 connectedSortable">
         <div class="box box-primary">
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="box-body">
-                {!! Form::model($parentPsychology, ['action' => ['ParentPsychologiesController@update', $parentPsychology->id], 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
+                {!! Form::model($parentPsychology, ['action' => ['Admin\ParentPsychologiesController@update', $parentPsychology->id], 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
 
                 <div class="form-group">
                     {{ Form::label('quote', 'Quote') }}
@@ -32,12 +32,12 @@
                 </div>
 
                 <div class="box-footer">
-                    {{Form::hidden('_method', 'PUT')}}
+                    {{ method_field('PUT') }}
                     {{ Form::submit('Update', ['class' => 'btn btn-success btn-sm']) }}
                     {!! Form::close() !!}
 
-                    {{ Form::open(['action' => ['ParentPsychologiesController@destroy', $parentPsychology->id], 'method' => "POST", 'class' => 'pull-right']) }}
-                    {{ Form::hidden('_method', "DELETE") }}
+                    {{ Form::open(['action' => ['Admin\ParentPsychologiesController@destroy', $parentPsychology->id], 'method' => "POST", 'class' => 'pull-right']) }}
+                    {{ method_field('DELETE') }}
                     {{ Form::submit('Delete', ['class' => 'btn btn-sm btn-danger']) }}
                     {{ Form::close() }}
                 </div>

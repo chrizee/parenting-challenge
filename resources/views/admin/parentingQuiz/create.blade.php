@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
-        <a href="/admin/parentingquiz"><button class="btn btn-sm btn-default"><i class="fa fa-arrow-circle-left"></i> Back</button></a>
+        <a href="{{url()->previous()}}"><button class="btn btn-sm btn-default"><i class="fa fa-arrow-circle-left"></i> Back</button></a>
     </div>
     <section class="col-lg-12 connectedSortable">
         <div class="box box-primary">
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="box-body">
-                {!! Form::open(['action' => 'ParentingQuizzesController@store', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
+                {!! Form::open(['action' => 'Admin\ParentingQuizzesController@store', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
                     <div class="col-md-6">
                         <div class="form-group">
                             {{Form::label('question', 'Question')}}

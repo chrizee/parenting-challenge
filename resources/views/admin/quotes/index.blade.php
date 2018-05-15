@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="box-body">
-                {!! Form::open(['action' => 'QuotesController@store', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
+                {!! Form::open(['action' => 'Admin\QuotesController@store', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
 
                 <div class="form-group">
                     {{ Form::label('quote', 'Quote') }}
