@@ -2556,7 +2556,7 @@ EOT;
     Polska Biblioteka Internetowa
 
     Project Gutenberg eBooks are often created from several printed
-    editions, all of which are confirmed as Public Domain in the US
+    editions, all of which are confirmed as Visitors Domain in the US
     unless a copyright notice is included.  Thus, we usually do not
     keep eBooks in compliance with any particular paper edition.
 

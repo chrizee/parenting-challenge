@@ -222,7 +222,7 @@ var Scroller = function ( oDTSettings, oOpts ) {
 
 Scroller.prototype = /** @lends Scroller.prototype */{
 	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-	 * Public methods
+	 * Visitors methods
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 	/**

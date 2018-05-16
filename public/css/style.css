@@ -1339,13 +1339,13 @@ h1, h2, h3, h4, h5, h6, figure {
 
 .pagination a {
   background: none;
-  border: none !important;
+  border: none /*!important*/;
   color: gray !important;
 }
 .pagination a:hover, .pagination a:focus, .pagination a:active {
   background: none !important;
 }
-.pagination > li > a {
+/*.pagination > li > a {
   margin: 0 2px;
   font-size: 18px;
   padding: 0 !important;
@@ -1360,7 +1360,7 @@ h1, h2, h3, h4, h5, h6, figure {
   line-height: 50px;
   display: table-cell;
   vertical-align: middle;
-}
+}*/
 .pagination > li > a:hover {
   color: #000;
   background: #e6e6e6 !important;

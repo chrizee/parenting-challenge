@@ -56,4 +56,13 @@ Route::prefix('admin')->group(function () {
 Route::get('/home', 'HomeController@index')->name('home');  //used after registration. cannot find where to override it thats why its still here
 
 //public routes
-Route::get('/', 'publicController@index');      //logging admin out redirects here
+Route::namespace('Visitors')->group(function() {
+
+    Route::get('/', 'PublicController@index')->name('index');      //logging admin out redirects here
+
+    Route::get('/childpsychology', 'PublicController@childPsychologies')->name('psychologies.child');
+    Route::get('/childpyschology/{id}', 'PublicController@childPsychology')->name('psychology.child');
+
+    Route::get('/parentpsychology', 'PublicController@parentPsychologies')->name('psychologies.parent');
+    Route::get('/parentpsychology/{id}', 'PublicController@parentPsychology')->name('psychology.parent');
+});

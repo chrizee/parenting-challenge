@@ -11,7 +11,7 @@ class Text extends \Faker\Provider\Text
      *
      * Language: Hungarian
      *
-     * License: Public Domain, since 2014.01.01
+     * License: Visitors Domain, since 2014.01.01
      *
      * @see http://mek.oszk.hu/01000/01038/
      * @var string

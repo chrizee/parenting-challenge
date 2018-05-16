@@ -2020,7 +2020,7 @@ EOT;
     Gutenberg-tm eBooks with only a loose network of volunteer support.
 
     Project Gutenberg-tm eBooks are often created from several printed
-    editions, all of which are confirmed as Public Domain in the U.S.
+    editions, all of which are confirmed as Visitors Domain in the U.S.
     unless a copyright notice is included.  Thus, we do not necessarily
     keep eBooks in compliance with any particular paper edition.
 

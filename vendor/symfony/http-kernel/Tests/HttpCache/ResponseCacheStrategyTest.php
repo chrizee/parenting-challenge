@@ -143,7 +143,7 @@ class ResponseCacheStrategyTest extends TestCase
         $cacheStrategy = new ResponseCacheStrategy();
 
         $masterResponse = new Response();
-        $masterResponse->setSharedMaxAge(3600); // Public, cacheable
+        $masterResponse->setSharedMaxAge(3600); // Visitors, cacheable
 
         /* This response has no validation or expiration information.
            That makes it uncacheable, it is always stale.

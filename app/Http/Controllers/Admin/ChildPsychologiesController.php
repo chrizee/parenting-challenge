@@ -58,7 +58,7 @@ class ChildPsychologiesController extends Controller
     {
         $this->validate($request, [
             'quote' => "required|string",
-            'image' => 'required|image|max:1999'
+            'image' => 'max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
         //handle file upload
         if($request->hasFile('image')) {
@@ -126,7 +126,7 @@ class ChildPsychologiesController extends Controller
     {
         $this->validate($request, [
             'quote' => "required|string",
-            'image' => 'nullable|image|max:1999'
+            'image' => 'max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
 
         $childPsychology = ChildPsychology::find($id);

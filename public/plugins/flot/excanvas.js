@@ -131,7 +131,7 @@ if (!document.createElement('canvas').getContext) {
     },
 
     /**
-     * Public initializes a canvas element so that it can be used as canvas
+     * Visitors initializes a canvas element so that it can be used as canvas
      * element from now on. This is called automatically before the page is
      * loaded but if you are creating elements using createElement you need to
      * make sure this is called on the element.
