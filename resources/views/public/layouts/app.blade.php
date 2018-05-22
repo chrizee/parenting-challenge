@@ -24,19 +24,51 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
     <!-- Icomoon Icon Fonts-->
     <link rel="stylesheet" href="{{ asset('css/icomoon.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" >
     <!-- Flexslider  -->
     <link rel="stylesheet" href="{{ asset('css/flexslider.css') }}">
     <!-- Bootstrap  -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <!-- Theme style  -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="{{ asset('plugins/iCheck/all.css') }}">
+    <!-- jQuery -->
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
     <!-- Modernizr JS -->
     <script src="{{ asset('js/modernizr-2.6.2.min.js') }}"></script>
     <!-- FOR IE9 below -->
     <!--[if lt IE 9]>
     <script src="{{ asset('js/respond.min.js') }}"></script>
     <![endif]-->
-
+    <style type="text/css">
+        input[type="radio"] {
+            vertical-align: middle;
+            width: 20px;
+            height: 20px;
+            margin-top: -5px ;
+            margin-left: 5px !important;
+            margin-right: 5px;
+            position: relative !important;
+        }
+        @if($show)
+            .fh5co-property-innter {
+                min-height: 180px;
+                max-height: 200px;
+            }
+        @endif
+        #fh5co-header nav ul li ul li a, #fh5co-offcanvas ul li ul li a {
+            color: #000;
+        }
+        #fh5co-header nav ul li ul li a:hover, #fh5co-offcanvas ul li ul li a {
+            color: #000;
+        }
+        #fh5co-header nav ul li ul, #fh5co-offcanvas ul li ul li a {
+            background-color: azure;
+            opacity: 0.9;
+        }
+    </style>
 </head>
 <body>
 
@@ -49,16 +81,26 @@
                     <h1><a href="{{ route('index') }}">Improve<span>Parenting.</span></a></h1>
                     <nav role="navigation">
                         <ul>
-                            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Psychology</a>
+                            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Psychology</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ route('psychologies.parent') }}">Parent psychology</a></li>
                                     <li><a href="{{ route('psychologies.child') }}">Child psychology</a></li>
+                                    <li><a href="{{ route('psychologies.parent') }}">Parent psychology</a></li>
                                 </ul>
                             </li>
-                            <li><a href="rent.html">Tips and Quotes</a></li>
-                            <li><a href="properties.html">Quiz</a></li>
-                            <li class="call"><a href="tel://123456789"><i class="icon-phone"></i> +1 123 456 789</a></li>
-                            <li class="cta"><a href="contact.html">Contact us</a></li>
+                            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Tips</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ route('tips.parent') }}">Parenting Tips</a></li>
+                                    <li><a href="{{ route('tips.pregnancy') }}">Pregnancy Tips</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{{ route('facts.baby') }}">Baby Facts</a></li>
+                            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quiz</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ route('babyquiz') }}">Baby Quiz</a></li>
+                                    <li><a href="{{ route('parentingquiz') }}">Parenting Quiz</a></li>
+                                </ul>
+                            </li>
+                            <li class="cta"><a href="{{ route('contact') }}">Contact us</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -66,15 +108,19 @@
         </div>
     </header>
 
-
     @yield('content')
 
     <div class="fh5co-cta" style="background-image: url(images/slide_4.jpg);">
         <div class="overlay"></div>
         <div class="container">
             <div class="col-md-12 text-center animate-box" data-animate-effect="fadeIn">
-                <h3>We Try To Update The Site Everyday</h3>
-                <p><a href="#" class="btn btn-primary btn-outline with-arrow">Get started now! <i class="icon-arrow-right"></i></a></p>
+                <h3>Suscribe to recieve our weekly parenting tip and baby facts. </h3>
+                {!! Form::open(['action' => "Visitors\PublicController@suscribe", 'method' => "POST"]) !!}
+                <div class="form-group row">
+                    {{ Form::email('email', '', ['class' => 'col-md-6 col-md-offset-3', 'placeholder' => 'Email', 'required' => 'required']) }}
+                </div>
+                {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-outline with-arrow']) }}
+                {{ Form::close() }}
             </div>
         </div>
     </div>
@@ -85,10 +131,10 @@
         <div class="container">
             <div class="col-md-3 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
                 <h3>About Us</h3>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. </p>
-                <p><a href="#" class="btn btn-primary btn-outline with-arrow btn-sm">I'm button <i class="icon-arrow-right"></i></a></p>
+                {!! $pages->about !!}
+                <p><a href="{{ route('contact') }}" class="btn btn-primary btn-outline with-arrow btn-sm">Contact us <i class="icon-arrow-right"></i></a></p>
             </div>
-            <div class="col-md-6 col-md-push-1 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
+            <!--<div class="col-md-6 col-md-push-1 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
                 <h3>Our Services</h3>
                 <ul class="float">
                     <li><a href="#">Web Design</a></li>
@@ -103,21 +149,29 @@
                     <li><a href="#">HandCrafted Templates</a></li>
                 </ul>
 
-            </div>
+            </div>-->
 
             <div class="col-md-2 col-md-push-1 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
                 <h3>Follow Us</h3>
                 <ul class="fh5co-social">
-                    <li><a href="#"><i class="icon-twitter"></i></a></li>
-                    <li><a href="#"><i class="icon-facebook"></i></a></li>
-                    <li><a href="#"><i class="icon-google-plus"></i></a></li>
-                    <li><a href="#"><i class="icon-instagram"></i></a></li>
+                    @empty(!$pages->twitter)
+                        <li><a href="{{ $pages->twitter }}"><i class="icon-twitter"></i></a></li>
+                    @endempty
+                    @empty(!$pages->facebook)
+                        <li><a href="{{ $pages->facebook }}"><i class="icon-facebook"></i></a></li>
+                    @endempty
+                    @empty(!$pages->googleplus)
+                        <li><a href="{{ $pages->googleplus }}"><i class="icon-google-plus"></i></a></li>
+                    @endempty
+                    @empty(!$pages->instagram)
+                        <li><a href="{{ $pages->instagram }}"><i class="icon-instagram"></i></a></li>
+                    @endempty
                 </ul>
             </div>
 
 
             <div class="col-md-12 fh5co-copyright text-center">
-                <p>&copy; 2016 Free HTML5 template. All Rights Reserved. <span>Designed with <i class="icon-heart"></i> by <a href="http://freehtml5.co/" target="_blank">FreeHTML5.co</a> Demo Images by <a href="http://unsplash.com/" target="_blank">Unsplash</a></span></p>
+                <p>&copy; 2018. All Rights Reserved. <span>Designed with <i class="icon-heart"></i> by <a href="" target="_blank">Valence web.</a> Images by <a href="www.stocksnap.io" target="_blank">stocksnap.io</a></span></p>
             </div>
 
         </div>
@@ -125,8 +179,6 @@
 </div>
 
 
-<!-- jQuery -->
-<script src="{{ asset('js/jquery.min.js') }}"></script>
 <!-- jQuery Easing -->
 <script src="{{ asset('js/jquery.easing.1.3.js') }}"></script>
 <!-- Bootstrap -->

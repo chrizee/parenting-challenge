@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\BabyFacts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BabyFactsController extends Controller
 {
@@ -52,14 +53,24 @@ class BabyFactsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'fact' => 'required|string|'
+            'fact' => 'required|string',
+            'image' => 'required|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
+
+        if($request->hasFile('image') && $request->file('image')->isValid()) {
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = 'baby_fact_'.time().'.'.$extension; //make he filename unique
+            $path = $request->file('image')->storeAs('public/baby_facts', $fileNameToStore);
+        } else {
+            $fileNameToStore = $this->noImage;
+        }
 
         $babyFact = new BabyFacts;
         $babyFact->fact = $request->input('fact');
+        $babyFact->image = $fileNameToStore;
         $babyFact->save();
 
-        return redirect('/admin/babyfact')->with('success', "Fact added successfully");
+        return redirect()->route('babyfact.index')->with('success', "Fact added successfully");
     }
 
     /**
@@ -71,15 +82,15 @@ class BabyFactsController extends Controller
     public function show($id)
     {
         $babyFact = BabyFacts::find($id);
-        if($babyFact->status == 0) {
-            return redirect('/admin/babyfact')->with('error', "Fact does not exist.");
+        if(empty($babyFact) || $babyFact->status == 0) {
+            return redirect()->route('babyfact.index')->with('error', "Fact does not exist.");
         }
         $data = [
             'title1' => 'Baby Fact',
             'title2' => 'Fact',
             'babyFact' => $babyFact
         ];
-        //return view($this->viewPath.'index')->with($data);
+        return view($this->viewPath.'show')->with($data);
     }
 
     /**
@@ -91,8 +102,8 @@ class BabyFactsController extends Controller
     public function edit($id)
     {
         $babyFact = BabyFacts::find($id);
-        if($babyFact->status == 0) {
-            return redirect('/admin/babyFact')->with('error', "Fact does not exist.");
+        if(empty($babyFact) || $babyFact->status == 0) {
+            return redirect()->route('babyfact.index')->with('error', "Fact does not exist.");
         }
         $data = [
             'title1' => 'Edit Fact',
@@ -112,13 +123,24 @@ class BabyFactsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'fact' => 'required|string'
+            'fact' => 'required|string',
+            'image' => 'nullable|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
 
         $babyFact = BabyFacts::find($id);
+
+        if($request->hasFile('image') && $request->file('image')->isValid()) {
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = 'baby_fact_'.time().'.'.$extension; //make he filename unique
+            $path = $request->file('image')->storeAs('public/baby_facts', $fileNameToStore);
+            if(!empty($babyFact->image) && $babyFact->image != $this->noImage) {
+                Storage::delete("public/baby_facts/".$babyFact->image);
+            }
+            $babyFact->image = $fileNameToStore;
+        }
         $babyFact->fact = $request->input('fact');
         $babyFact->save();
-        return redirect('admin/babyfact/')->with('success', 'Fact updated successfully');
+        return redirect()->route('babyfact.show', $id)->with('success', 'Fact updated successfully');
     }
 
     /**
@@ -130,11 +152,14 @@ class BabyFactsController extends Controller
     public function destroy($id)
     {
         $babyFact = BabyFacts::find($id);
-        //to deleter permanently
+        //to delete permanently
         //$babyFact->delete();
         //change the status instead of deleting permanently
         $babyFact->status = '0';
+        if(!empty($babyFact->image) && $babyFact->image != $this->noImage) {
+            Storage::delete('public/baby_facts/'.$babyFact->image);
+        }
         $babyFact->save();
-        return redirect('admin/babyfact')->with('success', 'Fact deleted');
+        return redirect()->route('babyfact.index')->with('success', 'Fact deleted');
     }
 }

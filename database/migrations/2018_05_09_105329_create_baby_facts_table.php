@@ -16,6 +16,7 @@ class CreateBabyFactsTable extends Migration
         Schema::create('baby_facts', function (Blueprint $table) {
             $table->increments('id');
             $table->text('fact');
+            $table->string('image');
             $table->enum('status', ['0', '1'])->default('1')->comment('0: deleted, 1: active');
             $table->timestamps();
         });

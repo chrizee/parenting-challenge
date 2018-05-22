@@ -12,6 +12,12 @@ use App\Advert;
 
 class PagesController extends Controller
 {
+    /*
+     * Number of adverts to allow in application.
+     * change here and everything will take shap in view and database
+     *
+     * @var int
+     */
     protected $numberOfAds = 3;
 
     public function __construct()
@@ -55,7 +61,7 @@ class PagesController extends Controller
         }
         if($request->has('aboutAdd')) {
             $this->validate($request, [
-                'about' => 'required|string'
+                'about' => 'required|string|max:170'
             ]);
             $pages->about = $request->input('about');
             $pages->save();
@@ -81,7 +87,6 @@ class PagesController extends Controller
         }
         return redirect('admin/settings')->with('success', "Setting Saved");
     }
-
     //updates the setting field
     public function updateSetting(Request $request) {
         $id = Pages::latest()->take(1)->get()[0]->id;
@@ -89,7 +94,7 @@ class PagesController extends Controller
 
         if($request->has('aboutEdit')) {
             $this->validate($request, [
-                'about' => 'required|string'
+                'about' => 'required|string|max:170'
             ]);
             $pages->about = $request->input('about');
             $pages->save();
@@ -157,7 +162,7 @@ class PagesController extends Controller
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
         $user->save();
-        return redirect('admin/profile')->with('success', 'Profile updated');
+        return redirect()->route('profile')->with('success', 'Profile updated');
     }
 
     public function adverts() {
@@ -176,7 +181,7 @@ class PagesController extends Controller
             'heading' => 'string|required',
             'ad' => 'string|required|',
             'link' => 'required|url',
-            'image' => 'image|max:1999'
+            'image' => 'required|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ])->validate();
         $ad = new Advert;
         if($request->hasFile('image')) {

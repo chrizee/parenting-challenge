@@ -152,8 +152,8 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="/admin/parentingquiz"><i class="fa fa-circle-o text-yellow"></i> Parenting Quiz</a></li>
                             <li><a href="/admin/babyquiz"><i class="fa fa-circle-o text-red"></i> Baby Quiz</a></li>
+                            <li><a href="/admin/parentingquiz"><i class="fa fa-circle-o text-yellow"></i> Parenting Quiz</a></li>
                         </ul>
                     </li>
                     <li class="treeview {{ (in_array($path, ['babyfact', 'quotes', 'parentingtips', 'pregnancytips'])) ? 'active': '' }}">
@@ -288,13 +288,8 @@
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- Sparkline -->
     <script src="{{ asset('plugins/sparkline/jquery.sparkline.min.js') }}"></script>
-    <!-- daterangepicker -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-    <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
     <!-- datepicker -->
     <script src="{{ asset('plugins/datepicker/bootstrap-datepicker.js') }}"></script>
-    <!-- Bootstrap WYSIHTML5 -->
-    <script src="{{ asset('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
     <!-- Slimscroll -->
     <script src="{{ asset('plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
     <!-- FastClick -->

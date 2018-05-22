@@ -58,7 +58,7 @@ class ChildPsychologiesController extends Controller
     {
         $this->validate($request, [
             'quote' => "required|string",
-            'image' => 'max:1999|mimes:jpeg,jpg,png,webp,gif'
+            'image' => 'required|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
         //handle file upload
         if($request->hasFile('image')) {
@@ -72,7 +72,7 @@ class ChildPsychologiesController extends Controller
         $childPsychology->quote = $request->input('quote');
         $childPsychology->image = $fileNameToStore;
         $childPsychology->save();
-        return redirect('admin/childpsychology')->with('success', "Quote added successfully");
+        return redirect()->route('childpsychology.index')->with('success', "Quote added successfully");
     }
 
     /**
@@ -85,7 +85,7 @@ class ChildPsychologiesController extends Controller
     {
         $childPsychology = ChildPsychology::find($id);
         if(empty($childPsychology) || $childPsychology->status == 0) {
-            return redirect('/admin/childpsychology')->with('error', "Quote does not exist.");
+            return redirect()->route('childpsychology.index')->with('error', "Quote does not exist.");
         }
         $data = [
             'title1' => "Child psychology",
@@ -105,7 +105,7 @@ class ChildPsychologiesController extends Controller
     {
         $childPsychology = ChildPsychology::find($id);
         if(empty($childPsychology) || $childPsychology->status == 0) {
-            return redirect('/admin/childpsychology')->with('error', "Quote does not exist.");
+            return redirect()->route('childpsychology.index')->with('error', "Quote does not exist.");
         }
         $data = [
             'title1' => "Edit child psychology",
@@ -126,7 +126,7 @@ class ChildPsychologiesController extends Controller
     {
         $this->validate($request, [
             'quote' => "required|string",
-            'image' => 'max:1999|mimes:jpeg,jpg,png,webp,gif'
+            'image' => 'nullable|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
 
         $childPsychology = ChildPsychology::find($id);
@@ -143,7 +143,7 @@ class ChildPsychologiesController extends Controller
 
         $childPsychology->quote = $request->input('quote');
         $childPsychology->save();
-        return redirect('admin/childpsychology/'.$id)->with('success', "Quote updated successfully");
+        return redirect()->route('childpsychology.show', $id)->with('success', "Quote updated successfully");
     }
 
     /**
@@ -155,12 +155,12 @@ class ChildPsychologiesController extends Controller
     public function destroy($id)
     {
         $childPsychology = ChildPsychology::find($id);
-        if($childPsychology->image != $this->noImage) {
+        if(!empty($childPsychology->image) && $childPsychology->image != $this->noImage) {
             Storage::delete('public/psychology/child/'.$childPsychology->image);
         }
         $childPsychology->status = '0';
         $childPsychology->save();
 
-        return redirect('admin/childpsychology')->with('success', 'Quote removed');
+        return redirect()->route('childpsychology.index')->with('success', 'Quote removed');
     }
 }

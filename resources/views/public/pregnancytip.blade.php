@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 animate-box">
-                    <h1><span class="colored">Child</span> Psychology</h1>
+                    <h1><span class="colored">Pregnancy</span> Tip</h1>
                 </div>
             </div>
         </div>
@@ -19,13 +19,13 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 text-center fh5co-heading animate-box" data-animate-effect="fadeIn">
                 </div>
-                @empty($childPsychology)
-                    <p>Invalid quote</p>
+                @empty($pregnancyTip)
+                    <p>Invalid Tip</p>
                     @else
                         <div class="col-md-5 col-xs-12 item-block animate-box" data-animate-effect="fadeIn">
                             <div class="fh5co-property">
                                 <figure>
-                                    <img src="{{ asset("/storage/psychology/child/$childPsychology->image") }}" alt="Quote Image" class="center-block img-responsive">
+                                    <img src="{{ asset("/storage/tips/pregnancy/$pregnancyTip->image") }}" alt="Tip Image" class="center-block img-responsive">
                                 </figure>
                             </div>
                         </div>
@@ -33,14 +33,14 @@
                             <div class="fh5co-property">
                                 <div class="fh5co-property-innter">
                                     <blockquote class="blockquote"><em>
-                                            {!! $childPsychology->quote !!}</em>
+                                            {!! $pregnancyTip->tip !!}</em>
                                     </blockquote>
                                 </div>
                                 <p class="fh5co-property-specification">
                                 </p>
                             </div>
                         </div>
-                @endempty
+                        @endempty
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
         <a href="{{url()->previous()}}"><button class="btn btn-sm btn-default"><i class="fa fa-arrow-circle-left"></i> Back</button></a>
     </div>
-    <section class="col-lg-7 connectedSortable">
+    <section class="col-lg-12 connectedSortable">
         <div class="box box-primary">
             <div class="box-header">
                 <i class="fa fa-comments-o"></i>

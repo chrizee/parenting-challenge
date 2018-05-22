@@ -55,7 +55,7 @@ class PregnancyTipsController extends Controller
     {
         $this->validate($request, [
             'tip' => 'required|string',
-            'image' => 'required|image|max:1999'
+            'image' => 'required|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
         
         if($request->hasFile('image')) {
@@ -70,7 +70,7 @@ class PregnancyTipsController extends Controller
         $pregnancyTips->image = $fileNameToStore;
         $pregnancyTips->save();
 
-        return redirect('admin/pregnancytips')->with('success', "Tip added");
+        return redirect()->route('pregnancytips.index')->with('success', "Tip added");
     }
 
     /**
@@ -82,8 +82,8 @@ class PregnancyTipsController extends Controller
     public function show($id)
     {
         $pregnancyTips = PregnancyTips::find($id);
-        if($pregnancyTips->status == 0) {
-            return redirect('/admin/pregnancytips')->with('error', "Tip does not exist.");
+        if(empty($pregnancyTips) || $pregnancyTips->status == 0) {
+            return redirect()->route('pregnancytips.index')->with('error', "Tip does not exist.");
         }
         $data = [
             'title1' => 'Pregnancy Tips',
@@ -102,8 +102,8 @@ class PregnancyTipsController extends Controller
     public function edit($id)
     {
         $pregnancyTip = PregnancyTips::find($id);
-        if($pregnancyTip->status == 0) {
-            return redirect('/admin/pregnancytips')->with('error', "Tip does not exist.");
+        if(empty($pregnancyTip) || $pregnancyTip->status == 0) {
+            return redirect()->route('pregnancytips.index')->with('error', "Tip does not exist.");
         }
         $data = [
             'title1' => 'Edit pregnancy tip',
@@ -124,7 +124,7 @@ class PregnancyTipsController extends Controller
     {
         $this->validate($request, [
             'tip' => 'required|string',
-            'image' => 'image|nullable|max:1999'
+            'image' => 'nullable|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
 
         $pregnancyTips = PregnancyTips::find($id);
@@ -141,7 +141,7 @@ class PregnancyTipsController extends Controller
         $pregnancyTips->tip = $request->input('tip');
         $pregnancyTips->save();
 
-        return redirect('admin/pregnancytips/'.$id)->with('success', "Tip updated");
+        return redirect()->route('pregnancytips.show', $id)->with('success', "Tip updated");
     }
 
     /**
@@ -156,11 +156,11 @@ class PregnancyTipsController extends Controller
         //to deleter permanently
         //$pregnancyTips->delete();
         //change the status instead of deleting permanently
-        if($pregnancyTips->image != $this->noImage) {
+        if(!empty($pregnancyTips->image) && $pregnancyTips->image != $this->noImage) {
             Storage::delete('public/tips/pregnancy/'.$pregnancyTips->image);
         }
         $pregnancyTips->status = '0';
         $pregnancyTips->save();
-        return redirect('admin/pregnancytips')->with('success', 'Tip deleted');
+        return redirect()->route('pregnancytips.index')->with('success', 'Tip deleted');
     }
 }

@@ -58,7 +58,7 @@ class ParentPsychologiesController extends Controller
     {
         $this->validate($request, [
             'quote' => "required|string",
-            'image' => 'required|image|max:1999'
+            'image' => 'required|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
         //handle file upload
         if($request->hasFile('image')) {
@@ -72,7 +72,7 @@ class ParentPsychologiesController extends Controller
         $parentPsychology->quote = $request->input('quote');
         $parentPsychology->image = $fileNameToStore;
         $parentPsychology->save();
-        return redirect('admin/parentpsychology')->with('success', "Quote added successfully");
+        return redirect()->route('parentpsychology.index')->with('success', "Quote added successfully");
     }
 
     /**
@@ -85,7 +85,7 @@ class ParentPsychologiesController extends Controller
     {
         $parentPsychology = ParentPsychology::find($id);
         if(empty($parentPsychology) || $parentPsychology->status == 0) {
-            return redirect('/admin/parentpsychology')->with('error', "Quote does not exist.");
+            return redirect()->route('parentpsychology.index')->with('error', "Quote does not exist.");
         }
         $data = [
             'title1' => "Parenting psychology",
@@ -105,7 +105,7 @@ class ParentPsychologiesController extends Controller
     {
         $parentPsychology = ParentPsychology::find($id);
         if(empty($parentPsychology) || $parentPsychology->status == 0) {
-            return redirect('/admin/parentpsychology')->with('error', "Quote does not exist.");
+            return redirect()->route('parentpsychology.index')->with('error', "Quote does not exist.");
         }
         $data = [
             'title1' => "Edit parenting psychology",
@@ -126,7 +126,7 @@ class ParentPsychologiesController extends Controller
     {
         $this->validate($request, [
             'quote' => "required|string",
-            'image' => 'nullable|image|max:1999'
+            'image' => 'nullable|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
         $parentPsychology = ParentPsychology::find($id);
         //handle file upload
@@ -141,7 +141,7 @@ class ParentPsychologiesController extends Controller
         }
         $parentPsychology->quote = $request->input('quote');
         $parentPsychology->save();
-        return redirect('admin/parentpsychology/'.$id)->with('success', "Quote updated successfully");
+        return redirect()->route('parentpsychology.show', $id)->with('success', "Quote updated successfully");
     }
 
     /**
@@ -153,12 +153,12 @@ class ParentPsychologiesController extends Controller
     public function destroy($id)
     {
         $parentPsychology = ParentPsychology::find($id);
-        if($parentPsychology->image != $this->noImage) {
+        if(!empty($parentPsychology->image) && $parentPsychology->image != $this->noImage) {
             Storage::delete('public/psychology/parent/'.$parentPsychology->image);
         }
         $parentPsychology->status = '0';
         $parentPsychology->save();
 
-        return redirect('admin/parentpsychology')->with('success', 'Quote removed');
+        return redirect()->route('parentpsychology.index')->with('success', 'Quote removed');
     }
 }

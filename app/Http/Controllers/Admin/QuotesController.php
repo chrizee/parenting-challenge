@@ -58,7 +58,7 @@ class QuotesController extends Controller
         $this->validate($request, [
             'quote' => 'required|string',
             'person' => 'nullable|string',
-            'image' => 'image|nullable|max:1999'
+            'image' => 'nullable|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
         $quote = new Quote;
         if($request->hasFile('image')) {
@@ -70,7 +70,7 @@ class QuotesController extends Controller
         $quote->quote = $request->input('quote');
         $quote->person = $request->input('person');
         $quote->save();
-        return redirect('admin/quotes')->with('success', 'Quote added successfully');
+        return redirect()->route('quotes.index')->with('success', 'Quote added successfully');
 
     }
 
@@ -84,7 +84,7 @@ class QuotesController extends Controller
     {
         $quote = Quote::find($id);
         if(!$quote || $quote->status == '0') {
-            return redirect('admin/quotes')->with('error', 'Quote does not exist');
+            return redirect()->route('quotes.index')->with('error', 'Quote does not exist');
         }
         $data = [
             'title1' => 'Quote',
@@ -117,7 +117,7 @@ class QuotesController extends Controller
         $this->validate($request, [
             'quote' => 'required|string',
             'person' => 'nullable|string',
-            'image' => 'nullable|image|max:1999'
+            'image' => 'nullable|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
         $quote = Quote::find($id);
         if($request->hasFile('image')) {
@@ -132,7 +132,7 @@ class QuotesController extends Controller
         $quote->quote = $request->input('quote');
         $quote->person = $request->input('person');
         $quote->save();
-        return redirect('admin/quotes/'.$id)->with('success', 'Quote updated successfully');
+        return redirect()->route('quotes.show', $id)->with('success', 'Quote updated successfully');
 
     }
 
@@ -150,6 +150,6 @@ class QuotesController extends Controller
         if($quote->image != $this->noImage && !is_null($quote->image)) {
             Storage::delete('public/quotes/'.$quote->image);
         }
-        return redirect('admin/quotes')->with('success', 'Quote deleted successfully');
+        return redirect()->route('quotes.index')->with('success', 'Quote deleted successfully');
     }
 }

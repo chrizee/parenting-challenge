@@ -152,7 +152,7 @@
                 </div>
 
                 <div class="form-group">
-                    {{ Form::label('image', 'Ad image (optional)') }}
+                    {{ Form::label('image', 'Ad image') }}
                     {{ Form::file('image', ['class' => 'form-control']) }}
                 </div>
 
@@ -165,20 +165,18 @@
         </div>
 
     </section>
-        @push('scripts')
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    $(document).on('click', 'button.addQuote', function(e) {
-                        if($('section.addForm').hasClass('hidden')) {
-                            $('a.sidebar-toggle').click();
-                            $('section.addForm').removeClass('hidden');
-                        }else {
-                            $('a.sidebar-toggle').click();
-                            $('section.addForm').addClass('hidden');
-                        }
-                    })
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(document).on('click', 'button.addQuote', function(e) {
+                    if($('section.addForm').hasClass('hidden')) {
+                        $('a.sidebar-toggle').click();
+                        $('section.addForm').removeClass('hidden');
+                    }else {
+                        $('a.sidebar-toggle').click();
+                        $('section.addForm').addClass('hidden');
+                    }
                 })
-            </script>
-        @endpush
+            })
+        </script>
     @endif
 @endsection

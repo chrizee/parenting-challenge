@@ -24,8 +24,12 @@
                     @foreach($parentingTips as $key => $value)
                         <div class="well">
                             {!! ($key+ 1).". ".trim($value->tip) !!}
-                            <a href="parentingtips/{{ $value->id }}"><button  class="btn btn-primary btn-sm">View</button></a>
-                            <a href="parentingtips/{{ $value->id }}/edit"><button  class="btn btn-warning btn-sm">Edit</button></a>
+                            <div class="row">
+                                <div class="col-md-3 col-md-offset-9">
+                                    <a href="parentingtips/{{ $value->id }}"><button  class="btn btn-primary btn-sm">View</button></a>
+                                    <a href="parentingtips/{{ $value->id }}/edit"><button  class="btn btn-warning btn-sm">Edit</button></a>
+                                </div>
+                            </div>
                         </div>
                     @endforeach
                 @else

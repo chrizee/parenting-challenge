@@ -55,7 +55,7 @@ class ParentingTipsController extends Controller
     {
         $this->validate($request, [
             'tip' => 'required|string',
-            'image' => 'image|required|max:1999'
+            'image' => 'required|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
 
         if($request->hasFile('image')) {
@@ -70,7 +70,7 @@ class ParentingTipsController extends Controller
         $parentingTips->image = $fileNameToStore;
         $parentingTips->save();
 
-        return redirect('admin/parentingtips')->with('success', "Tip added");
+        return redirect()->route('parentingtips.index')->with('success', "Tip added");
     }
 
     /**
@@ -82,8 +82,8 @@ class ParentingTipsController extends Controller
     public function show($id)
     {
         $parentingTips = ParentingTips::find($id);
-        if($parentingTips->status == 0) {
-            return redirect('/admin/parentingtips')->with('error', "Tip does not exist.");
+        if(empty($parentingTips) || $parentingTips->status == 0) {
+            return redirect()->route('parentingtips.index')->with('error', "Tip does not exist.");
         }
         $data = [
             'title1' => 'Parenting Tips',
@@ -102,8 +102,8 @@ class ParentingTipsController extends Controller
     public function edit($id)
     {
         $parentingTip = ParentingTips::find($id);
-        if($parentingTip->status == 0) {
-            return redirect('/admin/parentingtips')->with('error', "Tip does not exist.");
+        if(empty($parentingTip) || $parentingTip->status == 0) {
+            return redirect()->route('parentingtips.index')->with('error', "Tip does not exist.");
         }
         $data = [
             'title1' => 'Edit parenting tip',
@@ -124,7 +124,7 @@ class ParentingTipsController extends Controller
     {
         $this->validate($request, [
             'tip' => 'required|string',
-            'image' => 'image|nullable|max:1999'
+            'image' => 'nullable|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
         $parentingTips = ParentingTips::find($id);
 
@@ -140,7 +140,7 @@ class ParentingTipsController extends Controller
         $parentingTips->tip = $request->input('tip');
         $parentingTips->save();
 
-        return redirect('admin/parentingtips/'.$id)->with('success', "Tip updated");
+        return redirect()->route('parentingtips.show', $id)->with('success', "Tip updated");
     }
 
     /**
@@ -152,14 +152,14 @@ class ParentingTipsController extends Controller
     public function destroy($id)
     {
         $parentingTips = ParentingTips::find($id);
-        //to deleter permanently
+        //to delete permanently
         //$parentingTips->delete();
         //change the status instead of deleting permanently
-        if($parentingTips->image != $this->noImage) {
+        if(!empty($parentingTips->image) && $parentingTips->image != $this->noImage) {
             Storage::delete('public/tips/parent/'.$parentingTips->image);
         }
         $parentingTips->status = '0';
         $parentingTips->save();
-        return redirect('admin/parentingtips')->with('success', 'Tip deleted');
+        return redirect()->route('parentingtips.index')->with('success', 'Tip deleted');
     }
 }

@@ -4,7 +4,7 @@
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
         <a href="{{url()->previous()}}"><button class="btn btn-sm btn-default"><i class="fa fa-arrow-circle-left"></i> Back</button></a>
     </div>
-    <section class="col-lg-7 connectedSortable">
+    <section class="col-lg-12 connectedSortable">
         <div class="box box-primary">
             <div class="box-header">
                 <i class="fa fa-comments-o"></i>
@@ -19,13 +19,17 @@
                 </div>
             </div>
             <div class="box-body">
-                {!! Form::open(['action' => 'Admin\BabyFactsController@store', 'method' => "POST"]) !!}
+                {!! Form::open(['action' => 'Admin\BabyFactsController@store', 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
 
                 <div class="form-group">
                     {{ Form::label('fact', 'Fact') }}
                     {{Form::textarea('fact', '', ['id' => 'article-ckeditor', 'class' => 'form-control'])}}
                 </div>
 
+                <div class="form-group">
+                    {{Form::label('image', 'Image')}}
+                    {{Form::file('image', ['class' => 'form-control'])}}
+                </div>
 
                 <div class="box-footer">
                     {{ Form::submit('Add Fact', ['class' => 'btn btn-success btn-sm']) }}

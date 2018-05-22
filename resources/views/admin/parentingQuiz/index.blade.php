@@ -4,7 +4,7 @@
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
         <a href="/admin/parentingquiz/create"><button class="btn btn-sm btn-success">Add Questions <i class="fa fa-plus"></i></button></a>
     </div>
-    <section class="col-lg-7 connectedSortable">
+    <section class="col-lg-12 connectedSortable">
 
         <div class="box box-primary">
             <div class="box-header">

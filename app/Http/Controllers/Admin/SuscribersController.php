@@ -32,7 +32,7 @@ class SuscribersController extends Controller
      */
     public function index()
     {
-        $suscribers = Suscribers::all();
+        $suscribers = Suscribers::latest()->get();
         $data = [
             'title1' => "Suscribers",
             'title2' => "suscribers",

@@ -19,11 +19,16 @@
                 </div>
             </div>
             <div class="box-body">
-                {!! Form::model($babyFact, ['action' => ['Admin\BabyFactsController@update', $babyFact->id], 'method' => "POST"]) !!}
+                {!! Form::model($babyFact, ['action' => ['Admin\BabyFactsController@update', $babyFact->id], 'method' => "POST", 'enctype' => 'multipart/form-data']) !!}
 
                 <div class="form-group">
                     <label>Fact</label>
                     {{Form::textarea('fact', $babyFact->fact, ['id' => 'article-ckeditor', 'class' => 'form-control'])}}
+                </div>
+
+                <div class="form-group">
+                    {{Form::label('image', 'Change image')}}
+                    {{Form::file('image', ['class' => 'form-control'])}}
                 </div>
 
                 <div class="box-footer">
@@ -41,16 +46,4 @@
         </div>
 
     </section>
-
-    <!-- iCheck -->
-    <script src="{{ asset('plugins/iCheck/icheck.min.js') }}"></script>
-    <script type="text/javascript">
-        //$(document).ready(function() {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
-        });
-        //});
-    </script>
 @endsection

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
-        <a href="/admin/babyfact/create"><button class="btn btn-sm btn-success">Add baby fact <i class="fa fa-plus"></i></button></a>
+        <a href="{{ route('babyfact.create') }}"><button class="btn btn-sm btn-success">Add baby fact <i class="fa fa-plus"></i></button></a>
     </div>
     <section class="col-lg-12 connectedSortable">
 
@@ -23,10 +23,11 @@
                 @if(count($babyFact) > 0)
                     @foreach($babyFact as $key => $value)
                         <div class="well">
-                            <p class="text">{!! ($key+ 1).". ".$value->fact !!}</p>
+                            {!! ($key+ 1).". ".$value->fact !!}
                             <div class="row">
                                 <div class="col-md-3 col-md-offset-9">
-                                    <a href="babyfact/{{ $value->id }}/edit"><button  class="pull-right btn btn-warning btn-sm">Edit</button></a>
+                                    <a href="{{ route('babyfact.show', $value->id) }}"><button  class="btn btn-primary btn-sm">View</button></a>
+                                    <a href="{{ route('babyfact.edit', $value->id) }}"><button  class="btn btn-warning btn-sm">Edit</button></a>
                                 </div>
                             </div>
                         </div>

@@ -24,7 +24,7 @@ class BabyQuizzesController extends Controller
      */
     public function index()
     {
-        $babyQuiz = BabyQuiz::where('status', '=', '1')->orderBy('created_at', 'desc')->get();
+        $babyQuiz = BabyQuiz::where('status', '=', '1')->latest()->get();
         $data = [
             'title1' => 'Baby Quiz',
             'title2' => 'Quiz',
@@ -63,7 +63,7 @@ class BabyQuizzesController extends Controller
             'optionC' => 'required|string|max:191',
             'tip' => 'required|string',
             'answer' => 'required|string|max:1',
-            'image' => 'required|image|max:1999'
+            'image' => 'required|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
 
         if($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -84,7 +84,7 @@ class BabyQuizzesController extends Controller
         $babyQuiz->image = $fileNameToStore;
         $babyQuiz->save();
 
-        return redirect('admin/babyquiz')->with('success', "Question added");
+        return redirect()->route('babyquiz.index')->with('success', "Question added");
     }
 
     /**
@@ -96,8 +96,8 @@ class BabyQuizzesController extends Controller
     public function show($id)
     {
         $babyQuiz = BabyQuiz::find($id);
-        if($babyQuiz->status == 0) {
-            return redirect('/admin/babyquiz')->with('error', "Question does not exist.");
+        if(empty($babyQuiz) || $babyQuiz->status == 0) {
+            return redirect()->route('babyquiz.index')->with('error', "Question does not exist.");
         }
         $data = [
             'title1' => 'Baby Quiz',
@@ -116,8 +116,8 @@ class BabyQuizzesController extends Controller
     public function edit($id)
     {
         $babyQuiz = BabyQuiz::find($id);
-        if($babyQuiz->status == 0) {
-            return redirect('/admin/babyquiz')->with('error', "Question does not exist.");
+        if(empty($babyQuiz) || $babyQuiz->status == 0) {
+            return redirect()->route('babyquiz.index')->with('error', "Question does not exist.");
         }
         $data = [
             'title1' => 'Edit Quiz',
@@ -143,7 +143,7 @@ class BabyQuizzesController extends Controller
             'optionC' => 'required|string|max:191',
             'tip' => 'required|string',
             'answer' => 'required|string|max:1',
-            'image' => 'image|nullable|max:1999'
+            'image' => 'nullable|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
 
         $babyQuiz = BabyQuiz::find($id);
@@ -165,7 +165,7 @@ class BabyQuizzesController extends Controller
         $babyQuiz->answer = $request->input('answer');
         $babyQuiz->save();
 
-        return redirect('admin/babyquiz/'.$id)->with('success', "Question updated");
+        return redirect()->route('babyquiz.show', $id)->with('success', "Question updated");
     }
 
     /**
@@ -181,10 +181,10 @@ class BabyQuizzesController extends Controller
         //$babyQuiz->delete();
         //change the status instead of deleting permanently
         $babyQuiz->status = '0';
-        if($babyQuiz->image != $this->noImage) {
+        if(!empty($babyQuiz->image) && $babyQuiz->image != $this->noImage) {
             Storage::delete('public/quiz/baby/'.$babyQuiz->image);
         }
         $babyQuiz->save();
-        return redirect('admin/babyquiz')->with('success', 'Question deleted');
+        return redirect()->route('babyquiz.index')->with('success', 'Question deleted');
     }
 }

@@ -23,7 +23,7 @@ class ParentingQuizzesController extends Controller
      */
     public function index()
     {
-        $parentingQuiz = ParentingQuiz::where('status', '=', '1')->orderBy('created_at', 'desc')->get();
+        $parentingQuiz = ParentingQuiz::where('status', '=', '1')->latest()->get();
         $data = [
             'title1' => 'Parenting Quiz',
             'title2' => 'Quiz',
@@ -54,7 +54,6 @@ class ParentingQuizzesController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
         $this->validate($request, [
             'question' => 'required|string',
             'optionA' => 'required|string|max:191',
@@ -63,10 +62,10 @@ class ParentingQuizzesController extends Controller
             'tip' => 'required|string',
             'description' => 'required|string',
             'answer' => 'required|string|max:1',
-            'image' => 'required|image|max:1999'
+            'image' => 'required|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
 
-        if($request->hasFile('image')) {
+        if($request->hasFile('image') && $request->file('image')->isValid()) {
             $extension = $request->file('image')->getClientOriginalExtension();
             $fileNameToStore = 'quiz_parent_'.time().'.'.$extension; //make he filename unique
             $path = $request->file('image')->storeAs('public/quiz/parent', $fileNameToStore);
@@ -99,7 +98,7 @@ class ParentingQuizzesController extends Controller
     {
         $parentingQuiz = ParentingQuiz::find($id);
         if($parentingQuiz->status == 0) {
-            return redirect('/admin/parentingquiz')->with('error', "Question does not exist.");
+            return redirect()->route('parentingquiz.index')->with('error', "Question does not exist.");
         }
         $data = [
             'title1' => 'Parenting Quiz',
@@ -118,8 +117,8 @@ class ParentingQuizzesController extends Controller
     public function edit($id)
     {
         $parentingQuiz = ParentingQuiz::find($id);
-        if($parentingQuiz->status == 0) {
-            return redirect('/admin/parentingquiz')->with('error', "Question does not exist.");
+        if(empty($parentingQuiz) || $parentingQuiz->status == 0) {
+            return redirect()->route('parentingquiz.index')->with('error', "Question does not exist.");
         }
         $data = [
             'title1' => 'Edit Quiz',
@@ -146,11 +145,11 @@ class ParentingQuizzesController extends Controller
             'tip' => 'required|string',
             'description' => 'required|string',
             'answer' => 'required|string|max:1',
-            'image' => 'image|nullable|max:1999'
+            'image' => 'nullable|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ]);
 
         $parentingQuiz = ParentingQuiz::find($id);
-        if($request->hasFile('image')) {
+        if($request->hasFile('image') && $request->file('image')->isValid()) {
             $extension = $request->file('image')->getClientOriginalExtension();
             $fileNameToStore = 'quiz_parent_'.time().'.'.$extension; //make he filename unique
             $path = $request->file('image')->storeAs('public/quiz/parent', $fileNameToStore);
@@ -185,10 +184,10 @@ class ParentingQuizzesController extends Controller
         //$parentingQuiz->delete();
         //change the status instead of deleting permanently
         $parentingQuiz->status = '0';
-        if($parentingQuiz->image != $this->noImage) {
+        if(!empty($parentingQuiz->image) && $parentingQuiz->image != $this->noImage) {
             Storage::delete('public/quiz/parent/'.$parentingQuiz->image);
         }
         $parentingQuiz->save();
-        return redirect('admin/parentingquiz')->with('success', 'Question deleted');
+        return redirect()->route('parentingquiz.index')->with('success', 'Question deleted');
     }
 }
