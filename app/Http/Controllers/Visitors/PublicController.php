@@ -12,7 +12,11 @@ use App\PregnancyTips;
 use App\BabyFacts;
 use App\Quote;
 use App\Advert;
-use App\Suscribers;
+use App\Subscribers;
+use App\Pages;
+use App\Mail\SubscriberRegistered;
+use App\Mail\ContactUs;
+use Illuminate\Support\Facades\Mail;
 
 class PublicController extends Controller
 {
@@ -47,6 +51,9 @@ class PublicController extends Controller
             'message' => ['required', 'string']
         ])->validate();
         //send message to admin here
+        $pages = Pages::latest()->take(1)->get();
+        $page = (empty($pages[0])) ? $pages : $pages[0];
+        Mail::to($page->email)->send( new ContactUs($request));
         return redirect()->route('contact')->with('success', "Your message has been recieved and will be replied soonest.");
     }
 
@@ -59,7 +66,7 @@ class PublicController extends Controller
     }
 
     public function childPsychology($id) {
-        $childPsychology = ChildPsychology::find($id);
+        $childPsychology = ChildPsychology::find(decrypt($id));
         //check if quote is valid before returning view
         if(empty($childPsychology) || $childPsychology->status == '0') {
             return redirect()->route('psychologies.child')->with('error', 'Quote does not exist');
@@ -79,7 +86,7 @@ class PublicController extends Controller
     }
 
     public function parentPsychology($id) {
-        $parentPsychology = ParentPsychology::find($id);
+        $parentPsychology = ParentPsychology::find(decrypt($id));
         //check if quote is valid before returning view
         if(empty($parentPsychology) || $parentPsychology->status == '0') {
             return redirect()->route('psychologies.parent')->with('error', 'Quote does not exist');
@@ -99,7 +106,7 @@ class PublicController extends Controller
     }
 
     public function parentingTip($id) {
-        $parentingTip = ParentingTips::find($id);
+        $parentingTip = ParentingTips::find(decrypt($id));
         //check if tip is valid before returning view
         if(empty($parentingTip) || $parentingTip->status == '0') {
             return redirect()->route('tips.parent')->with('error', 'Tip does not exist');
@@ -119,7 +126,7 @@ class PublicController extends Controller
     }
 
     public function pregnancyTip($id) {
-        $pregnancyTip = PregnancyTips::find($id);
+        $pregnancyTip = PregnancyTips::find(decrypt($id));
         //check if tip is valid before returning view
         if(empty($pregnancyTip) || $pregnancyTip->status == '0') {
             return redirect()->route('tips.pregnancy')->with('error', 'Tip does not exist');
@@ -139,7 +146,7 @@ class PublicController extends Controller
     }
 
     public function babyFact($id) {
-        $babyFact = BabyFacts::find($id);
+        $babyFact = BabyFacts::find(decrypt($id));
         //check if tip is valid before returning view
         if(empty($babyFact) || $babyFact->status == '0') {
             return redirect()->route('facts.baby')->with('error', 'Fact does not exist');
@@ -158,13 +165,23 @@ class PublicController extends Controller
         return view($this->viewPath."quotes")->with($data);
     }
 
-    public function suscribe(Request $request) {
+    public function subscribe(Request $request) {
         $this->validate($request, [
-            'email' => "bail|required|email|max:191",
+            'email' => "bail|required|email|max:191|unique:suscribers",
         ]);
-        $suscriber = new Suscribers;
-        $suscriber->email = $request->input('email');
-        $suscriber->save();
-        return redirect()->route('index')->with('success', "Thank you for suscribing");
+        $subscriber = Subscribers::create(['email' => $request->input('email')]);
+
+        Mail::to($subscriber)->send(new SubscriberRegistered($subscriber));
+        return redirect()->route('index')->with('success', "Thank you for subscribing");
+    }
+
+    public function destroySubscriber($id)
+    {
+        Subscribers::destroy(decrypt($id));
+        return redirect()->route('index')->with('success', 'You have successfully unsubscribed from our weekly tips/facts');
+    }
+
+    public function sendMail() {
+        Mail::send(new SubscriberRegistered());
     }
 }

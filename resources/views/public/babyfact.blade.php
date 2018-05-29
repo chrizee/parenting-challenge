@@ -18,7 +18,7 @@
             </div>
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 text-center fh5co-heading animate-box" data-animate-effect="fadeIn">
-                    <h2>Baby <em>facts</em></h2>
+                    <h2>Baby fact</h2>
                     <p>Facts gathered from research over the years about babies and their development. </p>
                 </div>
                 @empty($babyFact)
@@ -38,7 +38,11 @@
                     <div class="col-md-5 col-xs-12 item-block animate-box" data-animate-effect="fadeIn">
                         <div class="fh5co-property">
                             <figure>
-                                <img src="{{ asset("/storage/baby_facts/$babyFact->image") }}" alt="Tip Image" class="center-block img-responsive">
+                                <picture>
+                                    <source srcset="{{ asset("/storage/baby_facts/$babyFact->image") }}" type="image/webp">
+                                    <source srcset="{{ asset("/storage/baby_facts/".explode('.', $babyFact->image)[0].".jpg") }}" type="image/jpeg">
+                                    <img src="{{ asset("/storage/baby_facts/".explode('.', $babyFact->image)[0].".jpg") }}" class="img-responsive" alt="Tip Image" />
+                                </picture>
                             </figure>
                         </div>
                     </div>

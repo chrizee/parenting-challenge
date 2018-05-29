@@ -9,14 +9,14 @@
             <p><i class="text-red fa fa-asterisk"></i> Deleting a suscriber on the other hand permanently removes the record. This action cannot be reversed.</p>
         </div>
     </div>
+    <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
+        <a href="{{ route('broadcast.index') }}"><button class="btn btn-warning btn-sm ">Send Broadcast</button></a>
+    </div>
     <section class="col-lg-12 connectedSortable">
-
         <div class="box box-primary">
             <div class="box-header">
                 <i class="fa fa-users"></i>
-
                 <h3 class="box-title">Suscribers <span class="text text-info">({{ count($suscribers) }})  </span></h3>
-
                 <div class="pull-right box-tools">
                     <button type="button" class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                         <i class="fa fa-minus"></i></button>
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="box-body">
-                @if(count($suscribers) > 0)
+            @if(count($suscribers) > 0)
                     <div class="table">
                         <table  class="table table-bordered table-hover table-striped datatable">
                             <thead>

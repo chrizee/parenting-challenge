@@ -27,7 +27,11 @@
                         <div class="col-md-5 col-xs-12 item-block animate-box" data-animate-effect="fadeIn">
                             <div class="fh5co-property">
                                 <figure>
-                                    <img src="{{ asset("/storage/tips/parent/$parentingTip->image") }}" alt="Tip Image" class="center-block img-responsive">
+                                    <picture>
+                                        <source srcset="{{ asset("/storage/tips/parent/$parentingTip->image") }}" type="image/webp">
+                                        <source srcset="{{ asset("/storage/tips/parent/".explode('.', $parentingTip->image)[0].".jpg") }}" type="image/jpeg">
+                                        <img src="{{ asset("/storage/tips/parent/".explode('.', $parentingTip->image)[0].".jpg") }}" class="img-responsive" alt="Tip Image" />
+                                    </picture>
                                 </figure>
                             </div>
                         </div>

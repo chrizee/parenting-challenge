@@ -4,7 +4,7 @@
     <aside id="fh5co-hero" class="js-fullheight">
         <div class="flexslider js-fullheight">
             <ul class="slides">
-                <li style="background-image: url({{ asset("/storage/adverts/baby_15.webp") }});">
+                <li style="background-image: url({{ asset("/storage/adverts/slider_1.jpg") }});">
                     <div class="container">
                         <div class="col-md-12 text-center js-fullheight fh5co-property-brief slider-text">
                             <div class="fh5co-property-brief-inner">
@@ -29,7 +29,7 @@
                                         <div class="price-status">
                                         </div>
                                         {!! $value->ad !!}
-                                        <p><a href="{{ $value->link }}" class="btn btn-primary">Buy</a></p>
+                                        <p><a href="{{ $value->link }}" class="btn btn-primary">{{ $value->button_text }}</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -50,10 +50,15 @@
                 @foreach($parentingTips as $value)
                     <div class="col-md-4 item-block animate-box" data-animate-effect="fadeIn">
                         <div class="fh5co-property">
+                            <a href="{{ route('tip.parent', encrypt($value->id)) }}">
                             <figure>
-                                <img src="{{ asset("/storage/tips/parent/$value->image") }}" alt="Tip image" class="img-responsive">
-                                <a href="{{ route('tip.parent', $value->id) }}" class="tag">View</a>
-                            </figure>
+                                <picture>
+                                    <source srcset="{{ asset("/storage/tips/parent/$value->image") }}" type="image/webp">
+                                    <source srcset="{{ asset("/storage/tips/parent/".explode('.', $value->image)[0].".jpg") }}" type="image/jpeg">
+                                    <img src="{{ asset("/storage/tips/parent/".explode('.', $value->image)[0].".jpg") }}" class="img-responsive" alt="Tip Image" />
+                                </picture>
+                                <a href="{{ route('tip.parent', encrypt($value->id)) }}" class="tag">View</a>
+                            </figure></a>
                             <div class="fh5co-property-innter">
                                 {!! (strlen($value->tip) > 200) ? substr($value->tip, 0, 200)." ...</p>" : $value->tip !!}
                             </div>
@@ -114,9 +119,13 @@
             <div class="row">
                 @foreach($babyFacts as $key => $value)
                     <div class="col-md-4 animate-box" data-animate-effect="fadeIn">
-                        <a class="fh5co-entry" href="{{ route('fact.baby', $value->id) }}">
+                        <a class="fh5co-entry" href="{{ route('fact.baby', encrypt($value->id)) }}">
                             <figure>
-                                <img src="{{ asset("/storage/baby_facts/$value->image") }}" alt="Fact image" class="img-responsive">
+                                <picture>
+                                    <source srcset="{{ asset("/storage/baby_facts/$value->image") }}" type="image/webp">
+                                    <source srcset="{{ asset("/storage/baby_facts/".explode('.', $value->image)[0].".jpg") }}" type="image/jpeg">
+                                    <img src="{{ asset("/storage/baby_facts/".explode('.', $value->image)[0].".jpg") }}" class="img-responsive" alt="Tip Image" />
+                                </picture>
                             </figure>
                             <div class="fh5co-copy">
                                 <span class="fh5co-date">{{ $value->created_at->toFormattedDateString() }}</span>

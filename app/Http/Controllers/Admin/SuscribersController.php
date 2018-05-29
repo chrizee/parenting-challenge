@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Suscribers;
+use App\Subscribers;
 use Illuminate\Http\Request;
 
 class SuscribersController extends Controller
@@ -32,7 +32,7 @@ class SuscribersController extends Controller
      */
     public function index()
     {
-        $suscribers = Suscribers::latest()->get();
+        $suscribers = Subscribers::latest()->get();
         $data = [
             'title1' => "Suscribers",
             'title2' => "suscribers",
@@ -48,9 +48,9 @@ class SuscribersController extends Controller
      * @param  \App\Suscribers  $suscribers
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Suscribers $suscribers, $id)
+    public function update(Request $request, Subscribers $suscribers, $id)
     {
-        $suscriber = Suscribers::find($id);
+        $suscriber = Subscribers::find($id);
         if($request->has('mute')) {
             $suscriber->mute = '0';
         }
@@ -69,7 +69,7 @@ class SuscribersController extends Controller
      */
     public function destroy($id)
     {
-        $suscriber = Suscribers::find($id);
+        $suscriber = Subscribers::find($id);
         $suscriber->delete();
         return redirect()->route('suscribers.index')->with('success', 'Deleted successfully');
     }

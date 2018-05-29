@@ -31,8 +31,12 @@
                                     <div class="col-md-4 col-sm-6 item-block animate-box" data-animate-effect="fadeIn">
                                         <div class="fh5co-property">
                                             <figure>
-                                                <img src="{{ asset("/storage/tips/parent/$value->image") }}" alt="Tip Image" class="center-block img-responsive">
-                                                <a href="{{ route('tip.parent', $value->id) }}" class="tag">View</a>
+                                                <picture>
+                                                    <source srcset="{{ asset("/storage/tips/parent/$value->image") }}" type="image/webp">
+                                                    <source srcset="{{ asset("/storage/tips/parent/".explode('.', $value->image)[0].".jpg") }}" type="image/jpeg">
+                                                    <img src="{{ asset("/storage/tips/parent/".explode('.', $value->image)[0].".jpg") }}" class="img-responsive" alt="Tip Image" />
+                                                </picture>
+                                                <a href="{{ route('tip.parent', encrypt($value->id)) }}" class="tag">View</a>
                                             </figure>
                                             <div class="fh5co-property-innter">
                                                 {!! (strlen($value->tip) > 130) ? substr($value->tip, 0, 130)." ...</p>" : $value->tip !!}

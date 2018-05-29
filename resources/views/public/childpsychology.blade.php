@@ -1,7 +1,7 @@
 @extends('public.layouts.app')
 
 @section('content')
-    <div class="fh5co-page-title" style="background-image: url({{ asset('/storage/images/slide_6.jpg') }});">
+    <div class="fh5co-page-title" style="background-image: url({{ asset('/storage/images/slide_3.jpg') }});">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
@@ -25,7 +25,11 @@
                         <div class="col-md-5 col-xs-12 item-block animate-box" data-animate-effect="fadeIn">
                             <div class="fh5co-property">
                                 <figure>
-                                    <img src="{{ asset("/storage/psychology/child/$childPsychology->image") }}" alt="Quote Image" class="center-block img-responsive">
+                                    <picture>
+                                        <source srcset="{{ asset("/storage/psychology/child/$childPsychology->image") }}" type="image/webp">
+                                        <source srcset="{{ asset("/storage/psychology/child/".explode('.', $childPsychology->image)[0].".jpg") }}" type="image/jpeg">
+                                        <img src="{{ asset("/storage/psychology/child/".explode('.', $childPsychology->image)[0].".jpg") }}" class="img-responsive" alt="quote Image" />
+                                    </picture>
                                 </figure>
                             </div>
                         </div>

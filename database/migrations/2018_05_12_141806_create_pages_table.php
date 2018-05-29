@@ -16,9 +16,6 @@ class CreatePagesTable extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->increments('id');
             $table->mediumText('about')->nullable();
-            $table->string('slider1')->nullable();
-            $table->string('slider2')->nullable();
-            $table->string('slider3')->nullable();
             $table->string('facebook')->nullable();
             $table->string('twitter')->nullable();
             $table->string('instagram')->nullable();
@@ -26,6 +23,10 @@ class CreatePagesTable extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('address')->nullable();
+            $table->integer('baby_quiz_ques')->default(10);
+            $table->integer('baby_quiz_time')->default(10);
+            $table->integer('parent_quiz_ques')->default(10);
+            $table->integer('parent_quiz_time')->default(10);
             $table->timestamps();
         });
     }

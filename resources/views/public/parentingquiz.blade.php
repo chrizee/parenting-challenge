@@ -1,14 +1,18 @@
 @extends('public.layouts.app')
 
 @section('content')
+
     <div id="fh5co-blog">
+
         <div class="container">
             <div class="row">
                 <div class="col-md-11 animate-box" data-animate-effect="fadeIn">
                     <div class="fh5co-entry" style="width:100%;">
                         <div class="fh5co-copy">
-                            {!! Form::open(['action' => 'Visitors\ParentingQuizController@mark', 'method' => "POST"]) !!}
-                                <legend>Parenting Quiz</legend>
+                            {!! Form::open(['action' => 'Visitors\ParentingQuizController@mark', 'method' => "POST", 'id' => 'test']) !!}
+                                <legend>Parenting Quiz <span class=" pull-right"><i class="fa fa-clock-o text-danger"></i>
+                                    <span id="counter" class="text text-danger text-center" style="font-size:1.2em"></span></span>
+                                </legend>
                                 <div class='row' style="background: white;">
                                     @foreach ($parentingQuiz as $key => $value)
                                         @php
@@ -20,6 +24,15 @@
                                             }
                                         @endphp
                                         <div class="ques @if(!$loop->first) hidden @endif ">
+                                            <div class="visible-xs">
+                                                <figure>
+                                                    <picture>
+                                                        <source srcset="/storage/quiz/parent/{{ $value->image }}" type="image/webp">
+                                                        <source srcset="/storage/quiz/parent/{{ explode('.', $value->image)[0].'.jpg' }}" type="image/jpeg">
+                                                        <img src="/storage/quiz/parent/{{ explode('.', $value->image)[0].'.jpg' }}" class="img-responsive" alt="question image" />
+                                                    </picture>
+                                                </figure>
+                                            </div>
                                             <div class="col-md-6">
                                                 <p class="text text-center no-margin">{{ ($key+1)." of ".count($parentingQuiz) }}</p>
                                                 <div class="form-group">
@@ -60,9 +73,13 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 hidden-xs">
                                                 <figure>
-                                                    <img src="/storage/quiz/parent/{{ $value->image }}" class="img-responsive" alt="question image" />
+                                                    <picture>
+                                                        <source srcset="/storage/quiz/parent/{{ $value->image }}" type="image/webp">
+                                                        <source srcset="/storage/quiz/parent/{{ explode('.', $value->image)[0].'.jpg' }}" type="image/jpeg">
+                                                        <img src="/storage/quiz/parent/{{ explode('.', $value->image)[0].'.jpg' }}" class="img-responsive" alt="question image" />
+                                                    </picture>
                                                 </figure>
                                             </div>
                                         </div>
@@ -72,35 +89,49 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-    <!-- iCheck 1.0.1 -->
-    <script src="{{ asset('plugins/iCheck/icheck.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $data = JSON.parse( {!! json_encode($answer) !!} );
-            var $correct = 0;
+            var $play = true;
             $(document).on('click', "input[type=radio]", function() {
                 var $ans = $(this).val();
                 var $id = $(this).attr('name');
                 $(this).parents('.options').slideUp('slow');    //hide the options after selecting an answer
                 $("div.description_"+$id).removeClass('hidden');    //show description after selecting an answer
-                if($ans == $data[$id]) {
-                    $correct += 1;
-
-                    //send ajax to update the correct column in the database with the question id
-                }else {
-                    //console.log($correct);
-                    //send ajax to update worng column in the database
-                }
+                $play = false;
             }).on('click', 'button.continue', function(e) {
                 e.preventDefault();
                 $parent = $(this).parents('div.ques');
                 $($parent).slideUp('slow');     //hide question div after clicking continue
                 $($parent).next().removeClass('hidden').fadeIn();   //show next question after clicking continue
+                $('html, body').animate({ scrollTop: 50 }, 'slow');
+                $play = true;
             });
+            var $counter = {{ $duration }} * 60 ;
+            function secondsToHms(d) {
+                d = Number(d);
+                var h = Math.floor(d / 3600);
+                var m = Math.floor(d % 3600 / 60);
+                var s = Math.floor(d % 3600 % 60);
+
+                var hDisplay = h > 0 ? h + (h == 1 ? " hour: " : " hours: ") : "";
+                var mDisplay = m >= 0 ? m + (m == 1 ? " min: " : " mins: ") : "";
+                var sDisplay = s >= 0 ? s + (s == 1 ? " sec" : " secs") : "";
+                return hDisplay + mDisplay + sDisplay;
+            }
+            var $interval = setInterval(function() {
+                if($counter <= 0) {
+                    $('input[type=radio]').removeAttr('required');
+                    $('form#test').submit();
+                    clearInterval($interval);
+                }
+                if($play) $counter--;
+                $('input[name=time]').val($counter);
+                $('span#counter').text(secondsToHms($counter));	//process the timer to HH:MM:SS using javascript
+
+            }, 1000);
         })
     </script>
 @endsection

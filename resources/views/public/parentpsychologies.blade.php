@@ -1,7 +1,7 @@
 @extends('public.layouts.app')
 
 @section('content')
-    <div class="fh5co-page-title" style="background-image: url({{ asset('/storage/images/slide_6.jpg') }});">
+    <div class="fh5co-page-title" style="background-image: url({{ asset('/storage/images/slide_1.jpg') }});">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
@@ -29,8 +29,12 @@
                                     <div class="col-md-4 col-sm-6 item-block animate-box" data-animate-effect="fadeIn">
                                         <div class="fh5co-property">
                                             <figure>
-                                                <img src="{{ asset("/storage/psychology/parent/$value->image") }}" alt="Quote Image" class="center-block img-responsive">
-                                                <a href="{{ route('psychology.parent', $value->id) }}" class="tag">View</a>
+                                                <picture>
+                                                    <source srcset="{{ asset("/storage/psychology/parent/$value->image") }}" type="image/webp">
+                                                    <source srcset="{{ asset("/storage/psychology/parent/".explode('.', $value->image)[0].".jpg") }}" type="image/jpeg">
+                                                    <img src="{{ asset("/storage/psychology/parent/".explode('.', $value->image)[0].".jpg") }}" class="img-responsive" alt="Quote Image" />
+                                                </picture>
+                                                <a href="{{ route('psychology.parent', encrypt($value->id)) }}" class="tag">View</a>
                                             </figure>
                                             <div class="fh5co-property-innter">
                                                 {!! (strlen($value->quote) > 130) ? substr($value->quote, 0, 130)." ...</p>" : $value->quote !!}

@@ -61,7 +61,7 @@ class PagesController extends Controller
         }
         if($request->has('aboutAdd')) {
             $this->validate($request, [
-                'about' => 'required|string|max:170'
+                'about' => 'required|string'
             ]);
             $pages->about = $request->input('about');
             $pages->save();
@@ -85,6 +85,19 @@ class PagesController extends Controller
             $pages->address = ($request->has('address')) ? $request->input('address') : '';
             $pages->save();
         }
+        if($request->has('quizAdd')) {
+            $this->validate($request, [
+                'baby_quiz_ques' => 'required|numeric',
+                'baby_quiz_time' => 'required|numeric',
+                'parent_quiz_ques' => 'required|numeric',
+                'parent_quiz_time' => 'required|numeric'
+            ]);
+            $pages->baby_quiz_ques = $request->input('baby_quiz_ques');
+            $pages->baby_quiz_time = $request->input('baby_quiz_time');
+            $pages->parent_quiz_ques = $request->input('parent_quiz_ques');
+            $pages->parent_quiz_time = $request->input('parent_quiz_time');
+            $pages->save();
+        }
         return redirect('admin/settings')->with('success', "Setting Saved");
     }
     //updates the setting field
@@ -94,7 +107,7 @@ class PagesController extends Controller
 
         if($request->has('aboutEdit')) {
             $this->validate($request, [
-                'about' => 'required|string|max:170'
+                'about' => 'required|string'
             ]);
             $pages->about = $request->input('about');
             $pages->save();
@@ -116,6 +129,19 @@ class PagesController extends Controller
             $pages->email = ($request->has('email')) ? $request->input('email') : '';
             $pages->phone = ($request->has('phone')) ? $request->input('phone') : '';
             $pages->address = ($request->has('address')) ? $request->input('address') : '';
+            $pages->save();
+        }
+        if($request->has('quizEdit')) {
+            $this->validate($request, [
+                'baby_quiz_ques' => 'required|numeric',
+                'baby_quiz_time' => 'required|numeric',
+                'parent_quiz_ques' => 'required|numeric',
+                'parent_quiz_time' => 'required|numeric'
+            ]);
+            $pages->baby_quiz_ques = $request->input('baby_quiz_ques');
+            $pages->baby_quiz_time = $request->input('baby_quiz_time');
+            $pages->parent_quiz_ques = $request->input('parent_quiz_ques');
+            $pages->parent_quiz_time = $request->input('parent_quiz_time');
             $pages->save();
         }
         return redirect('admin/settings')->with('success', "Setting updated");
@@ -140,8 +166,8 @@ class PagesController extends Controller
                 Rule::unique('users')->ignore(auth()->user()->id),
             ],
             'name' => 'bail|required|string|max:191',
-            'password' => 'bailnullable|string|min:6|confirmed',
-            'pic' => 'bailimage|nullable|max:1999'
+            'password' => 'bail|nullable|string|min:6|confirmed',
+            'pic' => 'bail|image|nullable|max:1999'
         ])->validate();
         //returns back if validation fails or use the validate() method on the instance of the Validator as done above
         /*if ($validator->fails()) {
@@ -181,6 +207,7 @@ class PagesController extends Controller
             'heading' => 'string|required',
             'ad' => 'string|required|',
             'link' => 'required|url',
+            'button_text' => 'required|string',
             'image' => 'required|max:1999|mimes:jpeg,jpg,png,webp,gif'
         ])->validate();
         $ad = new Advert;
@@ -193,6 +220,7 @@ class PagesController extends Controller
         $ad->heading = $request->input('heading');
         $ad->ad = $request->input('ad');
         $ad->link = $request->input('link');
+        $ad->button_text = $request->input('button_text');
         $ad->save();
         return redirect()->route('adverts')->with('success', 'Advert added successfully');
     }
@@ -202,6 +230,7 @@ class PagesController extends Controller
             'heading' => 'string|required',
             'ad' => 'string|required|',
             'link' => 'required|url',
+            'button_text' => 'required|string',
             'image' => 'max:1999|mimes:jpeg,jpg,png,webp,gif',
             'deletePic' => 'boolean'
         ])->validate();
@@ -224,6 +253,7 @@ class PagesController extends Controller
 
         $ad->heading = $request->input('heading');
         $ad->ad = $request->input('ad');
+        $ad->button_text = $request->input('button_text');
         $ad->link = $request->input('link');
         $ad->save();
         return redirect()->route('adverts')->with('success', 'Advert updated successfully');

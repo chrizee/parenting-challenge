@@ -18,6 +18,7 @@ class CreateAdvertsTable extends Migration
             $table->string('heading');
             $table->mediumText('ad');
             $table->string('link');
+            $table->string('button_text');
             $table->string('image')->nullable();
             $table->text('slider')->nullable();
             $table->enum('status', ['0', '1'])->default('1')->comment('0: deleted, 1: active');

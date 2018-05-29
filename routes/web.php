@@ -47,6 +47,7 @@ Route::prefix('admin')->group(function () {
             Route::resource('parentpsychology', "ParentPsychologiesController");
             Route::resource('quotes', "QuotesController");
             Route::resource('suscribers', "SuscribersController", ['only' => ['index', 'update', 'destroy']]);
+            Route::resource('broadcast', "BroadcastsController", ['only' => ['index', 'store']]);
 
             //routes to populate database with json files provided by client
             Route::get('/storebabyquiz', "StoreJSONFilesInDBController@storeBabyQuiz");
@@ -68,7 +69,8 @@ Route::get('/home', 'HomeController@index')->name('home');  //used after registr
 Route::namespace('Visitors')->group(function() {
 
     Route::get('/', 'PublicController@index')->name('index');      //logging admin out redirects here
-    Route::post('/', 'PublicController@suscribe');
+    Route::post('/', 'PublicController@subscribe');
+    Route::delete('/{id}', "PublicController@destroySubscriber");
 
     Route::get('/childpsychology', 'PublicController@childPsychologies')->name('psychologies.child');
     Route::get('/childpyschology/{id}', 'PublicController@childPsychology')->name('psychology.child');
@@ -97,5 +99,35 @@ Route::namespace('Visitors')->group(function() {
     Route::post('/contact', 'PublicController@mail');
 
     Route::get('/quotes', 'PublicController@quotes')->name('quotes');
-});
 
+    Route::get('/changebabyfacts', function() {
+        //$facts = App\BabyFacts::all();
+        //$facts = App\BabyQuiz::all();
+        //$facts = App\ChildPsychology::all();
+        //$facts = App\ParentingQuiz::all();
+        //$facts = App\ParentingTips::all();
+        $facts = App\ParentPsychology::all();
+        foreach ($facts as $fact) {
+            $image = explode('.', $fact->image)[0].'.jpg';
+            $fact->image = $image;
+            $fact->save();
+        }
+        return "success";
+    });
+    //testing view for email message
+    Route::get('/subscribemail', function() {
+        $subscriber = App\Subscribers::find(3);
+        return new App\Mail\SubscriberRegistered($subscriber);
+    });
+    Route::get('/ebookemail', function() {
+        return new App\Mail\SendEbookToUser('url');
+    });
+    Route::get('/contactemail', function() {
+        $request = new Illuminate\Http\Request;
+        $request['name'] = "test name";
+        $request['email'] = "me@me.com";
+        $request['message'] = "this is the demo message";
+       // return $request;
+        return new App\Mail\ContactUs($request);
+    });
+});

@@ -15,6 +15,7 @@
                 <ul class="nav nav-pills nav-stacked">
                     <li class="active about"><a href="#"><i class="fa fa-inbox"></i> About</a></li>
                     <li class="contact"><a href="#"><i class="fa fa-file-text-o"></i> Contact</a></li>
+                    <li class="quiz"><a href="#"><i class="fa fa-gears"></i> Quiz setting</a></li>
                 </ul>
             </div>
             <!-- /.box-body -->
@@ -145,7 +146,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        {{ Form::label('email', "Contact Email") }}
+                                        {{ Form::label('email', "Contact Email (Contact us mail will be sent here.)") }}
                                         {{ Form::text('email', $pages->email, ['class' => 'form-control']) }}
                                     </div>
 
@@ -196,7 +197,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    {{ Form::label('email', "Contact Email") }}
+                                    {{ Form::label('email', "Contact Email (Contact us mail will be sent here.)") }}
                                     {{ Form::text('email', '', ['class' => 'form-control']) }}
                                 </div>
 
@@ -210,6 +211,109 @@
                         <div class="form-group">
                             {{ Form::submit('Add', ['class' => "btn btn-sm btn-success pull-right"]) }}
                         </div>
+                    {!! Form::close() !!}
+                @endif
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+
+            </div>
+            <!-- /.box-footer -->
+        </div>
+        <!-- /. box -->
+    </div>
+    <div class="col-md-9 quiz hidden">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Quiz setting</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                @if(!empty($pages->id))
+                    <div class="quiz-content">
+                        <div class="social-auth-links table-responsive">
+                            <table class="table table-condensed table-bordered">
+                                <tr>
+                                    <th>Number of baby quiz to answer </th>
+                                    <td><span>{!! !empty($pages->baby_quiz_ques) ? $pages->baby_quiz_ques." questions" : "no number yet" !!}</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Duration of baby quiz </th>
+                                    <td><span>{!! !empty($pages->baby_quiz_time) ? $pages->baby_quiz_time." mins" : "no time yet" !!}</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Number of parenting quiz to answer </th>
+                                    <td><span>{!! !empty($pages->parent_quiz_ques) ? $pages->parent_quiz_ques." questions" : "no number yet" !!}</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Number of parenting quiz to answer </th>
+                                    <td><span>{!! !empty($pages->parent_quiz_ques) ? $pages->parent_quiz_ques." mins" : "no time yet" !!}</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <button class="btn btn-sm btn-info edit-quiz-form pull-right">Edit</button>
+                    </div>
+                    <div class="edit-quiz-form hidden">
+                        {!! Form::model($pages, ['action' => ['Admin\PagesController@updateSetting', $pages->id], 'method' => "POST"]) !!}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ Form::label('baby_quiz_ques', "Number of baby quiz to answer") }}
+                                    {{ Form::text('baby_quiz_ques', $pages->baby_quiz_ques, ['class' => 'form-control']) }}
+                                </div>
+                                {{ Form::hidden('quizEdit', '1') }}
+                                <div class="form-group">
+                                    {{ Form::label('baby_quiz_time', "Duration of baby quiz (mins)") }}
+                                    {{ Form::text('baby_quiz_time', $pages->baby_quiz_time, ['class' => 'form-control']) }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ Form::label('parent_quiz_ques', "Number of parenting quiz to answer") }}
+                                    {{ Form::text('parent_quiz_ques', $pages->parent_quiz_ques, ['class' => 'form-control']) }}
+                                </div>
+
+                                <div class="form-group">
+                                    {{ Form::label('parent_quiz_time', "Duration of parenting quiz (mins)") }}
+                                    {{ Form::text('parent_quiz_time', $pages->parent_quiz_time, ['class' => 'form-control']) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ Form::hidden('_method', 'PUT') }}
+                            {{ Form::submit('Update', ['class' => "btn btn-sm btn-success pull-right"]) }}
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                @else
+                    {!! Form::open(['action' => 'Admin\PagesController@storeSetting', 'method' => "POST"]) !!}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ Form::label('baby_quiz_ques', "Number of baby quiz to answer") }}
+                                {{ Form::text('baby_quiz_ques', $pages->baby_quiz_ques, ['class' => 'form-control']) }}
+                            </div>
+                            {{ Form::hidden('quizAdd', '1') }}
+                            <div class="form-group">
+                                {{ Form::label('baby_quiz_time', "Duration of baby quiz (mins)") }}
+                                {{ Form::text('baby_quiz_time', $pages->baby_quiz_time, ['class' => 'form-control']) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('parent_quiz_ques', "Number of parenting quiz to answer") }}
+                                {{ Form::text('parent_quiz_ques', $pages->parent_quiz_ques, ['class' => 'form-control']) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ Form::label('parent_quiz_time', "Duration of parenting quiz (mins)") }}
+                                {{ Form::text('parent_quiz_time', $pages->parent_quiz_time, ['class' => 'form-control']) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {{ Form::submit('Add', ['class' => "btn btn-sm btn-success pull-right"]) }}
+                    </div>
                     {!! Form::close() !!}
                 @endif
             </div>
@@ -237,7 +341,10 @@
             }).on('click', 'button.edit-contact-form', function() {
                 $('div.contact-content').addClass('hidden');
                 $('div.edit-contact-form').removeClass('hidden');
-            })
+            }).on('click', 'button.edit-quiz-form', function() {
+                $('div.quiz-content').addClass('hidden');
+                $('div.edit-quiz-form').removeClass('hidden');
+            });
         });
     </script>
 @endsection

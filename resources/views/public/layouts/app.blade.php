@@ -16,7 +16,8 @@
 
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <link rel="shortcut icon" href="{{asset('favicon.ico')}}">
+
+    <link rel="shortcut icon" type="image/png" href="{{asset('icon.png')}}">
     <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
     <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,400italic,700' rel='stylesheet' type='text/css'> -->
 
@@ -32,8 +33,6 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <!-- Theme style  -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <!-- iCheck for checkboxes and radio inputs -->
-    <link rel="stylesheet" href="{{ asset('plugins/iCheck/all.css') }}">
     <!-- jQuery -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <!-- Modernizr JS -->
@@ -110,16 +109,16 @@
 
     @yield('content')
 
-    <div class="fh5co-cta" style="background-image: url(images/slide_4.jpg);">
+    <div class="fh5co-cta" style="background-image: url({{ asset("/storage/images/slide_4.jpg") }});">
         <div class="overlay"></div>
         <div class="container">
             <div class="col-md-12 text-center animate-box" data-animate-effect="fadeIn">
-                <h3>Suscribe to recieve our weekly parenting tip and baby facts. </h3>
-                {!! Form::open(['action' => "Visitors\PublicController@suscribe", 'method' => "POST"]) !!}
+                <h3>Want us to email you weekly parenting tips and baby facts?</h3>
+                {!! Form::open(['action' => "Visitors\PublicController@subscribe", 'method' => "POST"]) !!}
                 <div class="form-group row">
                     {{ Form::email('email', '', ['class' => 'col-md-6 col-md-offset-3', 'placeholder' => 'Email', 'required' => 'required']) }}
                 </div>
-                {{ Form::submit('Submit', ['class' => 'btn btn-primary btn-outline with-arrow']) }}
+                {{ Form::submit('Subscribe', ['class' => 'btn btn-primary btn-outline with-arrow']) }}
                 {{ Form::close() }}
             </div>
         </div>
@@ -129,7 +128,7 @@
     <footer id="fh5co-footer" role="contentinfo">
 
         <div class="container">
-            <div class="col-md-3 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
+            <div class="col-md-6 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
                 <h3>About Us</h3>
                 {!! $pages->about !!}
                 <p><a href="{{ route('contact') }}" class="btn btn-primary btn-outline with-arrow btn-sm">Contact us <i class="icon-arrow-right"></i></a></p>

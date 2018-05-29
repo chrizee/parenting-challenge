@@ -29,6 +29,7 @@
                                 <div @empty(!$value->image) class="col-md-7" @endempty>
                                     <h3>{{ $value->heading }}</h3>
                                     {!! $value->ad !!}
+                                    <p class="text">Button text: {!! $value->button_text !!}</p>
                                     <p class="text person">Link: <a href="{{ $value->link }}" target="_blank">{!! $value->link !!}</a></p>
                                 </div>
                                 @empty(!$value->image)
@@ -72,6 +73,11 @@
                                                 <div class="form-group">
                                                     {{ Form::label('link', 'Link') }}
                                                     {{ Form::text('link', $value->link, ['class' => 'form-control']) }}
+                                                </div>
+
+                                                <div class="form-group">
+                                                    {{ Form::label('button_text', 'Button Text') }}
+                                                    {{ Form::text('button_text', '', ['class' => 'form-control']) }}
                                                 </div>
 
                                                 <div class="form-group">
@@ -149,6 +155,11 @@
                 <div class="form-group">
                     {{ Form::label('link', 'Link') }}
                     {{ Form::text('link', '', ['class' => 'form-control']) }}
+                </div>
+
+                <div class="form-group">
+                    {{ Form::label('button_text', 'Button Text') }}
+                    {{ Form::text('button_text', '', ['class' => 'form-control']) }}
                 </div>
 
                 <div class="form-group">

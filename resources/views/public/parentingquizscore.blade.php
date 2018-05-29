@@ -7,8 +7,11 @@
         <div class="fh5co-box animate-box">
             @include('public.layouts.message')
             <h2>Quiz Complete</h2>
-            <p>{{ $score.'/'.$total }} jquery knob</p>
-            <p>Your score is {{ $percent }}%.</p>
+            <p>{{ $score.'/'.$total }}</p>
+            <div class="text-center">
+                <input type="text" class="knob" value="{{ $percent }}" data-width="90" data-height="90" data-fgColor="#00a65a">
+                <div class="knob-label">Your score is {{ $percent }}%.</div>
+            </div>
             @if($percent >= 70)
                 {!! Form::open(['action' => "Visitors\ParentingQuizController@sendEbook", 'method' => "POST"]) !!}
                 <p>Enter your e-mail to recieve a free E-book for scoring up to 70%</p>
@@ -25,4 +28,13 @@
         </div>
 
     </div>
+    <script type="text/javascript" src="{{ asset('plugins/knob/jquery.knob.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $(".knob").knob({
+                'min': 0,
+                'max' : 100
+            });
+        })
+    </script>
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 use App\BabyQuiz;
 use App\ParentingQuiz;
 use App\ChildPsychology;

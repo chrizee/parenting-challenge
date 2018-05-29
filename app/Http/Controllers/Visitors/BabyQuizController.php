@@ -5,11 +5,25 @@ namespace App\Http\Controllers\Visitors;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\BabyQuiz;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendEbookToUser;
+use App\Pages;
 
 class BabyQuizController extends Controller
 
 {
     private $viewPath = "public.";
+    private $noOfQuesInQuiz;
+    private $duraionOfQuiz;        //time in mins
+
+    public function __construct()
+    {
+        $pages = Pages::latest()->take(1)->get();
+        $pages = (empty($pages[0])) ? $pages : $pages[0];
+        $this->noOfQuesInQuiz = empty($pages->baby_quiz_ques) ? 10 : $pages->baby_quiz_ques;
+        $this->duraionOfQuiz = empty($pages->baby_quiz_time) ? 10 : $pages->baby_quiz_time;
+    }
+
     /**
      * Shows the questions.
      *
@@ -17,7 +31,7 @@ class BabyQuizController extends Controller
      */
     public function index()
     {
-        $babyQuiz = BabyQuiz::where('status', '1')->get()->shuffle()->random(10);
+        $babyQuiz = BabyQuiz::where('status', '1')->get()->shuffle()->random($this->noOfQuesInQuiz);
         $answer = array();
         foreach ($babyQuiz as $key => $value) {
             $answer[$value->id] = $value->answer;
@@ -25,7 +39,8 @@ class BabyQuizController extends Controller
         $data = [
             'babyQuiz' => $babyQuiz,
             'answer' => json_encode($answer),
-            'progressBarColors' => ['primary', 'success', 'warning']
+            'progressBarColors' => ['primary', 'success', 'warning'],
+            'duration' => $this->duraionOfQuiz
         ];
         return view($this->viewPath.'babyquiz')->with($data);
     }
@@ -42,7 +57,7 @@ class BabyQuizController extends Controller
         foreach($answers as $key => $value) {
             $quiz = BabyQuiz::find($key);
             if(!empty($quiz) && $quiz->status == 1) {
-                if($quiz->answer == $value) {
+                if(!empty($value) && $quiz->answer == $value) {
                     $quiz->right++;
                     $correct++;
                 }else {
@@ -53,15 +68,20 @@ class BabyQuizController extends Controller
         }
         $data = [
             'score' => $correct,
-            'total' => count($answers),
-            'percent' => round(($correct/count($answers)) * 100)
+            'total' => $this->noOfQuesInQuiz,
+            'percent' => round(($correct/$this->noOfQuesInQuiz) * 100)
         ];
         return view($this->viewPath.'babyquizscore')->with($data);
     }
 
-    public function sendEbook()
+    public function sendEbook(Request $request)
     {
-        //logic to send email to email
+        $this->validate($request,[
+            'email' => 'required|email'
+        ]);
+        //get the random ebook here;
+        $ebook = "URL to attach ebook";
+        Mail::to($request->input('email'))->send(new SendEbookToUser($ebook));
         return redirect()->route('index')->with('success', "Check your inbox within the next 24hrs to download the e-book");
     }
 }
