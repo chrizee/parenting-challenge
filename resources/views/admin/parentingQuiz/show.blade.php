@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
-        <a href="{{url()->previous()}}"><button class="btn btn-sm btn-default"><i class="fa fa-arrow-circle-left"></i> Back</button></a>
+        <a href="{{route("parentingquiz.index")}}"><button class="btn btn-sm btn-default"><i class="fa fa-arrow-circle-left"></i> Back</button></a>
     </div>
     <section class="col-lg-7 connectedSortable">
         <div class="box box-primary">
@@ -30,7 +30,7 @@
                             <p class="text">Answer: {{ $parentingQuiz->answer }}</p>
                             <P class="text text-info">Tip: {{ $parentingQuiz->tip }}</P>
                             <h4 class="text text-bold">Description: </h4>
-                            <blockquote class="blockquote-yellow">{{ $parentingQuiz->description }}</blockquote>
+                            <blockquote class="blockquote-yellow">{!! $parentingQuiz->description !!}</blockquote>
                             <a href="/admin/parentingquiz/{{ $parentingQuiz->id }}/edit"><button  class="btn btn-primary btn-sm">Edit</button></a>
                             {{ Form::open(['action' => ['Admin\ParentingQuizzesController@destroy', $parentingQuiz->id], 'method' => "POST", 'class' => 'pull-right']) }}
                                 {{ method_field('DELETE') }}

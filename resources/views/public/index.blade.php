@@ -8,12 +8,17 @@
                     <div class="container">
                         <div class="col-md-12 text-center js-fullheight fh5co-property-brief slider-text">
                             <div class="fh5co-property-brief-inner">
-                                <div class="fh5co-box">
+                                {{--<div class="fh5co-box">
                                     <h3>Free E-book</h3>
                                     <div class="price-status">
                                     </div>
                                     <p class="text text-bold" style="color: magenta;">Score above 70% in the parenting quiz and get a free e-book on parenting.  </p>
-                                    <p><a href="{{ route('parentingquiz') }}" class="btn btn-primary">Get started</a></p>
+                                    <p><a href="{{ route('startparentingquiz') }}" class="btn btn-primary">Get started</a></p>
+                                </div>--}}
+                                <div style="background: antiquewhite; border-bottom-left-radius: 25px; border-top-right-radius: 25px;" class="text-center pull-right fh5co-box">
+                                    <a href="{{ route('startparentingquiz') }}">
+                                    <img src="{{asset("/storage/adverts/slider.jpg")}}" class="img-responsive"  alt=" ebook"/>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +84,7 @@
         <div class="fh5co-box animate-box">
             <h2>Get a free E-book.</h2>
             <p>Score above 70% in the parenting quiz and get a free e-book on parenting. Take test now.</p>
-            <p><a href="{{ route('parentingquiz') }}" class="btn btn-primary btn-outline with-arrow">Start now <i class="icon-arrow-right"></i></a></p>
+            <p><a href="{{ route('startparentingquiz') }}" class="btn btn-primary btn-outline with-arrow">Start now <i class="icon-arrow-right"></i></a></p>
         </div>
 
     </div>
@@ -128,7 +133,7 @@
                                 </picture>
                             </figure>
                             <div class="fh5co-copy">
-                                <span class="fh5co-date">{{ $value->created_at->toFormattedDateString() }}</span>
+                                {{--<span class="fh5co-date">{{ $value->created_at->toFormattedDateString() }}</span>--}}
                                 {!! (strlen($value->fact) > 130) ? substr($value->fact, 0, 130)." ...</p>" : $value->fact !!}
                             </div>
                         </a>

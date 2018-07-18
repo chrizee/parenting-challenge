@@ -90,12 +90,16 @@ class PagesController extends Controller
                 'baby_quiz_ques' => 'required|numeric',
                 'baby_quiz_time' => 'required|numeric',
                 'parent_quiz_ques' => 'required|numeric',
-                'parent_quiz_time' => 'required|numeric'
+                'parent_quiz_time' => 'required|numeric',
+                'parentingquizstart' => 'required|string',
+                'babyquizstart' => 'required|string'
             ]);
             $pages->baby_quiz_ques = $request->input('baby_quiz_ques');
             $pages->baby_quiz_time = $request->input('baby_quiz_time');
             $pages->parent_quiz_ques = $request->input('parent_quiz_ques');
             $pages->parent_quiz_time = $request->input('parent_quiz_time');
+            $pages->parentingquizstart = $request->input('parentingquizstart');
+            $pages->babyquizstart = $request->input('babyquizstart');
             $pages->save();
         }
         return redirect('admin/settings')->with('success', "Setting Saved");
@@ -136,12 +140,16 @@ class PagesController extends Controller
                 'baby_quiz_ques' => 'required|numeric',
                 'baby_quiz_time' => 'required|numeric',
                 'parent_quiz_ques' => 'required|numeric',
-                'parent_quiz_time' => 'required|numeric'
+                'parent_quiz_time' => 'required|numeric',
+                'parentingquizstart' => 'required|string',
+                'babyquizstart' => 'required|string'
             ]);
             $pages->baby_quiz_ques = $request->input('baby_quiz_ques');
             $pages->baby_quiz_time = $request->input('baby_quiz_time');
             $pages->parent_quiz_ques = $request->input('parent_quiz_ques');
             $pages->parent_quiz_time = $request->input('parent_quiz_time');
+            $pages->parentingquizstart = $request->input('parentingquizstart');
+            $pages->babyquizstart = $request->input('babyquizstart');
             $pages->save();
         }
         return redirect('admin/settings')->with('success', "Setting updated");

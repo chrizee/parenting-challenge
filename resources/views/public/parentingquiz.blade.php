@@ -65,7 +65,7 @@
                                                             </div>
                                                         </div>
                                                     @endif
-                                                    <p class="text">{{ trim($value->description) }}</p>
+                                                    <p class="text">{!! trim($value->description) !!}</p>
                                                     @if($loop->last)
                                                         {{ Form::submit('Finish', ['class' => "pull-right btn btn-$color btn-sm"]) }}
                                                     @else

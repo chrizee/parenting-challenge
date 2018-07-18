@@ -24,7 +24,6 @@ class SendEbookToUser extends Mailable
     {
         $this->ebook = $ebook;
     }
-
     /**
      * Build the message.
      *
@@ -32,6 +31,6 @@ class SendEbookToUser extends Mailable
      */
     public function build()
     {
-        return $this->view($this->viewPath.'ebook');
+        return $this->view($this->viewPath.'ebook')->subject('Congratulations');
     }
 }

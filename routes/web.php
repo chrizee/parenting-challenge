@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -87,10 +87,12 @@ Route::namespace('Visitors')->group(function() {
     Route::get('/babyfacts', 'PublicController@babyFacts')->name('facts.baby');
     Route::get('/babyfacts/{id}', 'PublicController@babyFact')->name('fact.baby');
 
+    Route::view("/parentingquiz/start", "public.startparentingquiz")->name('startparentingquiz');
     Route::get('/parentingquiz', 'ParentingQuizController@index')->name('parentingquiz');
     Route::post('/parentingquiz', 'ParentingQuizController@mark');
     Route::put('/parentingquiz', "ParentingQuizController@sendEbook");
 
+    Route::view("/babyquiz/start", "public.startbabyquiz")->name('startbabyquiz');
     Route::get('/babyquiz', 'BabyQuizController@index')->name('babyquiz');
     Route::post('/babyquiz', 'BabyQuizController@mark');
     Route::put('/babyquiz', "BabyQuizController@sendEbook");
@@ -120,7 +122,7 @@ Route::namespace('Visitors')->group(function() {
         return new App\Mail\SubscriberRegistered($subscriber);
     });
     Route::get('/ebookemail', function() {
-        return new App\Mail\SendEbookToUser('url');
+        return new App\Mail\SendEbookToUser(asset("pdf/The_most_common_parenting_mistakes_ever_DrAnishNRK.pdf"));
     });
     Route::get('/contactemail', function() {
         $request = new Illuminate\Http\Request;

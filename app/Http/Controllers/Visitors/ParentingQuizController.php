@@ -25,7 +25,6 @@ class ParentingQuizController extends Controller
     /**
      * Shows the questions.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -46,15 +45,19 @@ class ParentingQuizController extends Controller
     /**
      * Marks the question submitted by the user.
      *
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function mark(Request $request)
     {
         $answers = $request->except('_token');
         $correct = 0;
+        $parentingQuiz = [];
         foreach($answers as $key => $value) {
             $quiz = ParentingQuiz::find($key);
             if(!empty($quiz) && $quiz->status == 1) {
+                array_push($parentingQuiz, $quiz);
                 if(!empty($value) && $quiz->answer == $value) {
                     $quiz->right++;
                     $correct++;
@@ -67,7 +70,10 @@ class ParentingQuizController extends Controller
         $data = [
             'score' => $correct,
             'total' => $this->noOfQuesInQuiz,
-            'percent' => round(($correct/$this->noOfQuesInQuiz) * 100)
+            'progressBarColors' => ['primary', 'success', 'warning'],
+            'percent' => round(($correct/$this->noOfQuesInQuiz) * 100),
+            'parentingQuiz' => $parentingQuiz,
+            'answersFromUser' => $answers
         ];
         return view($this->viewPath.'parentingquizscore')->with($data);
     }
@@ -78,8 +84,8 @@ class ParentingQuizController extends Controller
             'email' => 'required|email'
         ]);
         //get the random ebook here;
-        $ebook = "URL to attach ebook";
-        Mail::to($request->input('email'))->send(new SendEbookToUser($ebook));
+        $ebookUrl = asset("storage/pdf/The_most_common_parenting_mistakes_ever_DrAnishNRK.pdf");
+        Mail::to($request->input('email'))->send(new SendEbookToUser($ebookUrl));
         return redirect()->route('index')->with('success', "Check your inbox within the next 24hrs to download the e-book");
     }
 }

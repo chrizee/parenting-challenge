@@ -231,6 +231,12 @@
             <div class="box-body">
                 @if(!empty($pages->id))
                     <div class="quiz-content">
+                        <div class="text">
+                            <h3>Parenting quiz starting text </h3>
+                            {!! $pages->parentingquizstart !!}
+                            <h3>Baby quiz starting text </h3>
+                            {!! $pages->babyquizstart !!}
+                        </div>
                         <div class="social-auth-links table-responsive">
                             <table class="table table-condensed table-bordered">
                                 <tr>
@@ -246,8 +252,8 @@
                                     <td><span>{!! !empty($pages->parent_quiz_ques) ? $pages->parent_quiz_ques." questions" : "no number yet" !!}</span></td>
                                 </tr>
                                 <tr>
-                                    <th>Number of parenting quiz to answer </th>
-                                    <td><span>{!! !empty($pages->parent_quiz_ques) ? $pages->parent_quiz_ques." mins" : "no time yet" !!}</span></td>
+                                    <th>Duration of parenting quiz </th>
+                                    <td><span>{!! !empty($pages->parent_quiz_time) ? $pages->parent_quiz_time." mins" : "no time yet" !!}</span></td>
                                 </tr>
                             </table>
                         </div>
@@ -256,6 +262,16 @@
                     <div class="edit-quiz-form hidden">
                         {!! Form::model($pages, ['action' => ['Admin\PagesController@updateSetting', $pages->id], 'method' => "POST"]) !!}
                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ Form::label('parentingquizstart', "Parenting quiz starting text") }}
+                                    {{ Form::textarea('parentingquizstart', $pages->parentingquizstart, ['id' => 'article-ckeditor2', 'class' => 'form-control']) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ Form::label('babyquizstart', "Baby quiz starting text") }}
+                                    {{ Form::textarea('babyquizstart', $pages->babyquizstart, ['id' => 'article-ckeditor3', 'class' => 'form-control']) }}
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     {{ Form::label('baby_quiz_ques', "Number of baby quiz to answer") }}
@@ -288,25 +304,35 @@
                 @else
                     {!! Form::open(['action' => 'Admin\PagesController@storeSetting', 'method' => "POST"]) !!}
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {{ Form::label('parentingquizstart', "Parenting quiz starting text") }}
+                                {{ Form::textarea('parentingquizstart', "", ['id' => 'article-ckeditor2', 'class' => 'form-control']) }}
+                            </div>
+                            <div class="form-group">
+                                {{ Form::label('babyquizstart', "Baby quiz starting text") }}
+                                {{ Form::textarea('babyquizstart', "", ['id' => 'article-ckeditor3', 'class' => 'form-control']) }}
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 {{ Form::label('baby_quiz_ques', "Number of baby quiz to answer") }}
-                                {{ Form::text('baby_quiz_ques', $pages->baby_quiz_ques, ['class' => 'form-control']) }}
+                                {{ Form::text('baby_quiz_ques', "", ['class' => 'form-control']) }}
                             </div>
                             {{ Form::hidden('quizAdd', '1') }}
                             <div class="form-group">
                                 {{ Form::label('baby_quiz_time', "Duration of baby quiz (mins)") }}
-                                {{ Form::text('baby_quiz_time', $pages->baby_quiz_time, ['class' => 'form-control']) }}
+                                {{ Form::text('baby_quiz_time', "", ['class' => 'form-control']) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('parent_quiz_ques', "Number of parenting quiz to answer") }}
-                                {{ Form::text('parent_quiz_ques', $pages->parent_quiz_ques, ['class' => 'form-control']) }}
+                                {{ Form::text('parent_quiz_ques', "", ['class' => 'form-control']) }}
                             </div>
 
                             <div class="form-group">
                                 {{ Form::label('parent_quiz_time', "Duration of parenting quiz (mins)") }}
-                                {{ Form::text('parent_quiz_time', $pages->parent_quiz_time, ['class' => 'form-control']) }}
+                                {{ Form::text('parent_quiz_time', "", ['class' => 'form-control']) }}
                             </div>
                         </div>
                     </div>
@@ -328,6 +354,8 @@
     <!-- /.col -->
     <script type="text/javascript">
         $(document).ready(function() {
+            CKEDITOR.replace( 'article-ckeditor2' );
+            CKEDITOR.replace( 'article-ckeditor3' );
             $(document).on('click', 'ul.nav-pills li', function(e) {
                $class = $(this).attr('class');
                console.log($class);

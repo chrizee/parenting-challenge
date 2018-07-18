@@ -18,7 +18,7 @@
 <div class="container">
     <p>Congratulations on scoring high in our parenting IQ challenge.</p>
     <p>Find attached is a free ebook to help improve your parenting skills. Happy reading.</p>
-    <p>Ebook will be here. {{ $ebook }}</p>
+    <p>Download ebook <a href="{{ $ebook }}">here</a></p>
 </div>
 </body>
 </html>

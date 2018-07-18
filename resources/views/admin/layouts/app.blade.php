@@ -186,12 +186,12 @@
                         </ul>
                     </li>
                     <li class="{{ (in_array($path, ['adverts'])) ? 'active': '' }}">
-                        <a href="/admin/adverts">
+                        <a href="{{ route('adverts') }}">
                             <i class="fa fa-th"></i> <span>Ads</span>
                         </a>
                     </li>
                     <li class="{{ (in_array($path, ['settings'])) ? 'active': '' }}">
-                        <a href="/admin/settings">
+                        <a href="{{route('setting')}}">
                             <i class="fa fa-gears"></i> <span>Settings</span>
                         </a>
                     </li>

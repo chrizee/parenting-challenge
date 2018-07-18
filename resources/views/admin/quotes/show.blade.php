@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row" style="margin-left: 15px; margin-bottom: 1em;">
-        <a href="{{url()->previous()}}"><button class="btn btn-sm btn-success"><i class="fa fa-arrow-circle-left"></i> Back</button></a>
+        <a href="{{route("quotes.index")}}"><button class="btn btn-sm btn-success"><i class="fa fa-arrow-circle-left"></i> Back</button></a>
     </div>
     <section class="col-lg-6 connectedSortable">
 

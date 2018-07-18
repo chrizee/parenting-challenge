@@ -126,7 +126,6 @@
                     clearInterval($interval);
                 }
                 if($play) $counter--;
-                $('input[name=time]').val($counter);
                 $('span#counter').text(secondsToHms($counter));	//process the timer to HH:MM:SS using javascript
 
             }, 1000);

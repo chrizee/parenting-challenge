@@ -29,7 +29,7 @@
                         <div class="form-group">
                             <label></label>
                             {{Form::label('description', 'Description')}}
-                            {{Form::textarea('description', $parentingQuiz->description, ['id' => 'article-ckeditor', 'class' => 'form-control'])}}
+                            {{Form::textarea('description', $parentingQuiz->description, ['id' => 'article-ckeditor1', 'class' => 'form-control'])}}
                         </div>
 
                         <div class="options">
@@ -111,6 +111,7 @@
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' // optional
         });
+        CKEDITOR.replace( 'article-ckeditor1' );
         //});
     </script>
 @endsection

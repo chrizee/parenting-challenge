@@ -385,6 +385,7 @@ class ComposerStaticInit1642b96721e5f98449f38a5d4a9a22c9
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Mail\\Broadcast' => __DIR__ . '/../..' . '/app/Mail/Broadcast.php',
         'App\\Mail\\ContactUs' => __DIR__ . '/../..' . '/app/Mail/ContactUs.php',
         'App\\Mail\\SendEbookToUser' => __DIR__ . '/../..' . '/app/Mail/SendEbookToUser.php',
         'App\\Mail\\SubscriberRegistered' => __DIR__ . '/../..' . '/app/Mail/SubscriberRegistered.php',

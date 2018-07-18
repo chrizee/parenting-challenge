@@ -48,15 +48,17 @@ class BabyQuizController extends Controller
     /**
      * Marks the question submitted by the user.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function mark(Request $request)
     {
         $answers = $request->except('_token');
         $correct = 0;
+        $babyQuiz = [];
         foreach($answers as $key => $value) {
             $quiz = BabyQuiz::find($key);
             if(!empty($quiz) && $quiz->status == 1) {
+                array_push($babyQuiz, $quiz);
                 if(!empty($value) && $quiz->answer == $value) {
                     $quiz->right++;
                     $correct++;
@@ -69,7 +71,10 @@ class BabyQuizController extends Controller
         $data = [
             'score' => $correct,
             'total' => $this->noOfQuesInQuiz,
-            'percent' => round(($correct/$this->noOfQuesInQuiz) * 100)
+            'percent' => round(($correct/$this->noOfQuesInQuiz) * 100),
+            'progressBarColors' => ['primary', 'success', 'warning'],
+            'babyQuiz' => $babyQuiz,
+            'answersFromUser' => $answers
         ];
         return view($this->viewPath.'babyquizscore')->with($data);
     }
@@ -80,8 +85,8 @@ class BabyQuizController extends Controller
             'email' => 'required|email'
         ]);
         //get the random ebook here;
-        $ebook = "URL to attach ebook";
-        Mail::to($request->input('email'))->send(new SendEbookToUser($ebook));
+        $ebookUrl = asset("storage/pdf/The_most_common_parenting_mistakes_ever_DrAnishNRK.pdf");
+        Mail::to($request->input('email'))->send(new SendEbookToUser($ebookUrl));
         return redirect()->route('index')->with('success', "Check your inbox within the next 24hrs to download the e-book");
     }
 }
